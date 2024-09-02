@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Planet {
+public class Planet implements EventModifiableObject {
 	public static final String TYPE = "planet";
 	public Planet(Node node) {
 		// Names are optional for stellar objects.
@@ -20,9 +20,7 @@ public class Planet {
 			List<String> args = child.getArgs();
 
 			if (name.equals("attributes")) {
-				for (String attribute : args) {
-					addAttribute(attribute);
-				}
+				attributes = new ArrayList<>(args);
 			} else if (name.equals("landscape")) {
 				setLandscape(Builder.asSprite(child, TYPE));
 			} else if (name.equals("music")) {
@@ -103,6 +101,80 @@ public class Planet {
 	private int tributeValue = 0;
 	private int tributeThreshold = 4000;
 	private Map<String, Integer> tributeFleets = new HashMap<>();
+
+	@Override
+	public void applyModifiers(Node node) {
+		boolean descriptionModified = false;
+		boolean spaceportModified = false;
+
+		for (Node child : node.getChildren()) {
+			if (child.getName().equals("attributes")) {
+				attributes = Builder.modifyList(attributes, child, TYPE);
+			} else if (name.equals("landscape")) {
+				setLandscape(Builder.asSprite(child, TYPE));
+			} else if (name.equals("music")) {
+				setMusic(Builder.asString(child, TYPE));
+			} else if (name.equals("description")) {
+				description = Builder.modifyDescription(description,
+					descriptionModified, child, TYPE);
+				descriptionModified = true;
+			} else if (name.equals("spaceport")) {
+				spaceportDescription = Builder.modifyDescription(spaceportDescription,
+					spaceportModified, child, TYPE);
+				spaceportModified = true;
+			} else if (name.equals("port")) {
+				setPortNode(Builder.checkRemoval(child));
+			} else if (name.equals("government")) {
+				setGovernment(Builder.asString(child, TYPE));
+			} else if (name.equals("shipyard")) {
+				addShipyard(Builder.asString(child, TYPE));
+			} else if (name.equals("outfitter")) {
+				addOutfitter(Builder.asString(child, TYPE));
+			} else if (child.getName().equals("required reputation")) {
+				setRequiredReputation(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("bribe")) {
+				setBribe(Builder.asDouble(child, TYPE, 0.01));
+			} else if (child.getName().equals("security")) {
+				setSecurity(Builder.asDouble(child, TYPE, 0.25));
+			} else if (child.getName().equals("wormhole")) {
+				setWormhole(Builder.asString(child, TYPE));
+			} else if (child.getName().equals("tribute")) {
+				if (child.getFlag() == Node.REMOVE) {
+					setTributeValue(0);
+					setTributeThreshold(4000);
+					tributeFleets = new HashMap<>();
+				} else {
+					try {
+						try {
+							setTributeValue(Integer.parseInt(child.getArgs().get(0)));
+						} catch (NumberFormatException e) {
+							Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_INT, TYPE, child);
+						}
+						for (Node grand : child.getChildren()) {
+							if (grand.getName().equals("threshold")) {
+								try {
+									setTributeThreshold(Integer.parseInt(grand.getArgs().get(0)));
+								} catch (NumberFormatException e) {
+									Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_INT, TYPE, grand);
+								}
+							} else if (grand.getName().equals("fleet")) {
+								try {
+									addTributeFleet(
+										grand.getArgs().get(0),
+										Integer.parseInt(grand.getArgs().get(1))
+									);
+								} catch (Exception e) {
+									Logger.nodeErr(Logger.ERROR_OBJECT_CREATION, TYPE, grand);
+								}
+							}
+						}
+					} catch (IndexOutOfBoundsException e) {
+						Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
+					}
+				}
+			}
+		}
+	}
 
 	// Getters
 	public String getName() {

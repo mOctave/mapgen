@@ -2,7 +2,7 @@ package moctave.esmapper;
 
 import java.awt.Color;
 
-public class Government {
+public class Government implements EventModifiableObject {
 	public static final String TYPE = "government";
 	public Government(Node node) {
 
@@ -21,9 +21,18 @@ public class Government {
 		}
 	}
 
+	@Override
+	public void applyModifiers(Node node) {
+		for (Node child : node.getChildren()) {
+			if (child.getName().equals("color")) {
+				color = Builder.asColor(child, TYPE);
+			}
+		}
+	}
+
 	private String name;
 
-	private Color color;
+	private Color color = Color.WHITE;
 
 	public String getName() {
 		return name;

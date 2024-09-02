@@ -66,13 +66,14 @@ public class Main {
 	private static String gameDir = "";
 	private static List<String> plugins = new ArrayList<>();
 
-	// Maps and viewports.
+	// Graphical components.
 	private static Map<String, GalacticMap> maps = new HashMap<>();
 	private static Map<String, Legend> legends = new HashMap<>();
 	private static List<Viewport> viewports = new ArrayList<>();
 
 	// All defined objects.
 	private static Map<String, Color> colors = new HashMap<>();
+	private static Map<String, Event> events = new HashMap<>();
 	private static Map<String, List<String>> eventLists = new HashMap<>();
 
 	public static void main(String[] args) {
@@ -134,6 +135,12 @@ public class Main {
 					}
 				} catch (Exception e) {
 					Logger.nodeErr(Logger.ERROR_OBJECT_CREATION, "color", node);
+				}
+			} else if (node.getName().equals("event")) {
+				try {
+					events.put(node.getArgs().get(0), new Event(node));
+				} catch (IndexOutOfBoundsException e) {
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "event", node);
 				}
 			}
 		}
@@ -293,5 +300,15 @@ public class Main {
 		}
 
 		return m;
+	}
+
+	public static Event getEvent(String key) {
+		Event e = events.get(key);
+
+		if (e == null) {
+			Logger.warn("No event with name %s.", key);
+		}
+
+		return e;
 	}
 }

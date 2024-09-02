@@ -40,6 +40,7 @@ public class Logger {
 	public static final int WARNING_UNNAMED_NODE = 3;
 	public static final int WARNING_UNLIKELY_VALUE = 4;
 	public static final int WARNING_UNLIKELY_ARGS = 5;
+	public static final int WARNING_WRONG_FLAG = 6;
 
 	public static final String[] WARNING_MESSAGES = new String[]{
 		"Successful execution",
@@ -47,7 +48,8 @@ public class Logger {
 		"Exception thrown during $PARENT creation",
 		"Unnamed $NODENAME node",
 		"Unlikely argument for $NODENAME node in $PARENT definition",
-		"Unlikely number of arguments for $NODENAME node in $PARENT definition"
+		"Unlikely number of arguments for $NODENAME node in $PARENT definition",
+		"Unexpected flag for node $NODENAME"
 	};
 
 	public static void nodeErr(int errorType, String parent, Node node) {

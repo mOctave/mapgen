@@ -1,10 +1,21 @@
 package moctave.esmapper;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Builder {
+	public static Node checkRemoval(Node node) {
+		if (node.getFlag() == Node.REMOVE)
+			return null;
+
+		return node;
+	}
+
 	public static String asString(Node node, String parent) {
+		if (node.getFlag() == Node.REMOVE)
+			return null;
+
 		List<String> args = node.getArgs();
 
 		if (args.size() < 1) {
@@ -20,6 +31,9 @@ public class Builder {
 	}
 
 	public static int asInt(Node node, String parent) {
+		if (node.getFlag() == Node.REMOVE)
+			return 0;
+
 		List<String> args = node.getArgs();
 
 		if (args.size() < 1) {
@@ -39,7 +53,33 @@ public class Builder {
 		}
 	}
 
+	public static int asInt(Node node, String parent, int def) {
+		if (node.getFlag() == Node.REMOVE)
+			return def;
+
+		List<String> args = node.getArgs();
+
+		if (args.size() < 1) {
+			Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, parent, node);
+			return def;
+		}
+
+		if (args.size() > 1) {
+			Logger.nodeWarn(Logger.WARNING_EXTRA_ARGS, parent, node);
+		}
+
+		try {
+			return Integer.parseInt(args.get(0));
+		} catch (NumberFormatException e) {
+			Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_INT, parent, node);
+			return def;
+		}
+	}
+
 	public static double asDouble(Node node, String parent) {
+		if (node.getFlag() == Node.REMOVE)
+			return 0;
+
 		List<String> args = node.getArgs();
 
 		if (args.size() < 1) {
@@ -59,7 +99,33 @@ public class Builder {
 		}
 	}
 
+	public static double asDouble(Node node, String parent, double def) {
+		if (node.getFlag() == Node.REMOVE)
+			return def;
+
+		List<String> args = node.getArgs();
+
+		if (args.size() < 1) {
+			Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, parent, node);
+			return def;
+		}
+
+		if (args.size() > 1) {
+			Logger.nodeWarn(Logger.WARNING_EXTRA_ARGS, parent, node);
+		}
+
+		try {
+			return Double.parseDouble(args.get(0));
+		} catch (NumberFormatException e) {
+			Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_REAL, parent, node);
+			return def;
+		}
+	}
+
 	public static RectCoordinate asCoordinate(Node node, String parent) {
+		if (node.getFlag() == Node.REMOVE)
+			return null;
+
 		List<String> args = node.getArgs();
 
 		if (args.size() < 2) {
@@ -83,6 +149,10 @@ public class Builder {
 	}
 
 	public static Sprite asSprite(Node node, String parent) {
+		if (node.getFlag() == Node.REMOVE)
+			return null;
+
+
 		List<String> args = node.getArgs();
 
 		if (args.size() < 1) {
@@ -98,6 +168,9 @@ public class Builder {
 	}
 
 	public static Color asColor(Node node, String parent) {
+		if (node.getFlag() == Node.REMOVE)
+			return Color.WHITE;
+
 		List<String> args = node.getArgs();
 		Color color = null;
 
@@ -180,5 +253,56 @@ public class Builder {
 		}
 
 		return color;
+	}
+
+	public static List<String> modifyList(
+		List<String> original,
+		Node node,
+		String parent
+	) {
+		List<String> args = node.getArgs();
+		List<String> newList = new ArrayList<>(original);
+
+		if (node.getFlag() == Node.ADD) {
+			for (String arg : args) {
+				newList.add(arg);
+			}
+			return newList;
+		} else if (node.getFlag() == Node.REMOVE) {
+			if (args.size() == 0)
+				return new ArrayList<>();
+
+			for (String arg : args) {
+				newList.remove(arg);
+			}
+			return newList;
+		}
+		
+		if (node.getFlag() != Node.NORMAL)
+			Logger.nodeWarn(Logger.WARNING_WRONG_FLAG, parent, node);
+
+		return args;
+	}
+
+	public static String modifyDescription(
+		String original,
+		boolean priorChanges,
+		Node node,
+		String parent
+	) {
+		String desc = original;
+
+		if (node.getFlag() == Node.ADD || priorChanges) {
+			desc += asString(node, parent) + "\n";
+		} else if (node.getFlag() == Node.REMOVE) {
+			desc = "\t";
+		} else {
+			if (node.getFlag() != Node.NORMAL)
+				Logger.nodeWarn(Logger.WARNING_WRONG_FLAG, parent, node);
+	
+			desc = "\t" + asString(node, parent) + "\n";
+		}
+
+		return desc;
 	}
 }

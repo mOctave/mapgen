@@ -30,7 +30,7 @@ public class GalacticMap extends DrawnItem {
 			} else if (child.getName().equals("paint")) {
 				paintMode = Builder.asString(child, TYPE);
 			} else if (child.getName().equals("event")) {
-				paintMode = Builder.asString(child, TYPE);
+				events.add(Builder.asString(child, TYPE));
 			} else if (child.getName().equals("event list")) {
 				try {
 					for (String event : Main.getEventList(args.get(0))) {
@@ -100,6 +100,13 @@ public class GalacticMap extends DrawnItem {
 			} else if (node.getName().equals("planet")) {
 				addPlanet(new Planet(node));
 			}
+		}
+
+		Logger.notify("Applying events...");
+
+		for (String eventname : events) {
+			Event event = Main.getEvent(eventname);
+			event.apply(this);
 		}
 
 		System.out.printf("Total governments: %d.%n", governments.size());

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Wormhole {
+public class Wormhole implements EventModifiableObject {
 	public static final String TYPE = "wormhole";
 	public Wormhole(Node node) {
 
@@ -41,6 +41,34 @@ public class Wormhole {
 	private boolean mappable = false;
 	private Map<String, String> links = new HashMap<>();
 	private Color color = Main.getColor("map wormhole");
+
+	@Override
+	public void applyModifiers(Node node) {
+		for (Node child : node.getChildren()) {
+			List<String> args = child.getArgs();
+
+			if (child.getName().equals("display name")) {
+				displayName = Builder.asString(child, TYPE);
+
+				if (displayName == null)
+					displayName = "???";
+			} else if (child.getName().equals("mappable")) {
+				mappable = true && !(child.getFlag() == Node.REMOVE);
+			} else if (child.getName().equals("link")) {
+				if (child.getFlag() == Node.REMOVE) {
+					links = new HashMap<>();
+				} else {
+					try {
+						links.put(args.get(0), args.get(1));
+					} catch (IndexOutOfBoundsException e) {
+						Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
+					}
+				}
+			} else if (child.getName().equals("color")) {
+				color = Builder.asColor(child, TYPE);
+			}
+		}
+	}
 
 	public String getName() {
 		return name;

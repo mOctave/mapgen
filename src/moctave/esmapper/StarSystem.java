@@ -3,7 +3,7 @@ package moctave.esmapper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StarSystem {
+public class StarSystem implements EventModifiableObject {
 	public static final String TYPE = "system";
 	public StarSystem(Node node) {
 
@@ -57,6 +57,53 @@ public class StarSystem {
 
 	private List<StellarObject> objects = new ArrayList<>();
 	private List<String> hyperlinks = new ArrayList<>();
+
+	@Override
+	public void applyModifiers(Node node) {
+		for (Node child : node.getChildren()) {
+			List<String> args = child.getArgs();
+			boolean objectsModified = false;
+
+			if (child.getName().equals("inaccessible")) {
+				inaccessible = true && !(child.getFlag() == Node.REMOVE);
+			} else if (child.getName().equals("hidden")) {
+				hidden = true && !(child.getFlag() == Node.REMOVE);
+			} else if (child.getName().equals("shrouded")) {
+				shrouded = true && !(child.getFlag() == Node.REMOVE);
+			} else if (child.getName().equals("pos")) {
+				setPosition(Builder.asCoordinate(child, TYPE));
+			} else if (child.getName().equals("government")) {
+				setGovernment(Builder.asString(child, TYPE));
+			} else if (child.getName().equals("attributes")) {
+				attributes = Builder.modifyList(attributes, node, TYPE);
+			} else if (child.getName().equals("music")) {
+				setMusic(Builder.asString(child, TYPE));
+			} else if (child.getName().equals("object")) {
+				if (child.getFlag() == Node.ADD || objectsModified) {
+					addObject(new StellarObject(child));
+				} else {
+					objects = new ArrayList<>();
+					if (child.getFlag() != Node.REMOVE) {
+						addObject(new StellarObject(child));
+					}
+				}
+
+				objectsModified = true;
+			} else if (child.getName().equals("link")) {
+				if (child.getFlag() == Node.REMOVE) {
+					if (args.size() > 0) {
+						hyperlinks.remove(args.get(0));
+					} else {
+						hyperlinks = new ArrayList<>();
+					}
+				} else {
+					for (String arg : args) {
+						addHyperlink(arg);
+					}
+				}
+			}
+		}
+	}
 
 	public String toString() {
 		String attributeSummary = "";
@@ -222,5 +269,9 @@ public class StarSystem {
 
 	public void addHyperlink(String hyperlink) {
 		hyperlinks.add(hyperlink);
+	}
+
+	public void removeHyperlink(String hyperlink) {
+		hyperlinks.remove(hyperlink);
 	}
 }
