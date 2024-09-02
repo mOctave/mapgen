@@ -3,6 +3,7 @@ package moctave.esmapper;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Wormhole {
 	public Wormhole(Node node) {
@@ -60,7 +61,7 @@ public class Wormhole {
 	private String displayName = "???";
 
 	private boolean mappable = false;
-	private HashMap<String, String> links = new HashMap<>();
+	private Map<String, String> links = new HashMap<>();
 	private Color color = Main.getColor("map wormhole");
 
 	public String getName() {
@@ -79,7 +80,7 @@ public class Wormhole {
 		return links.get(s);
 	}
 
-	public HashMap<String, String> getLinks() {
+	public Map<String, String> getLinks() {
 		return links;
 	}
 

@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GalacticMap extends DrawnItem {
 
@@ -103,11 +104,11 @@ public class GalacticMap extends DrawnItem {
 	private List<String> events = new ArrayList<>();
 
 	// Defined objects for this map.
-	private HashMap<String, StarSystem> systems = new HashMap<>();
-	private HashMap<String, Galaxy> galaxies = new HashMap<>();
-	private HashMap<String, Government> governments = new HashMap<>();
-	private HashMap<String, Wormhole> wormholes = new HashMap<>();
-	private HashMap<String, Planet> planets = new HashMap<>();
+	private Map<String, StarSystem> systems = new HashMap<>();
+	private Map<String, Galaxy> galaxies = new HashMap<>();
+	private Map<String, Government> governments = new HashMap<>();
+	private Map<String, Wormhole> wormholes = new HashMap<>();
+	private Map<String, Planet> planets = new HashMap<>();
 
 	@Override
 	public String getType() {
@@ -227,7 +228,7 @@ public class GalacticMap extends DrawnItem {
 				continue;
 
 			// Draw link
-			HashMap<String, String> done = new HashMap<>();
+			Map<String, String> done = new HashMap<>();
 			if (!(done.containsKey(val) && done.get(val).equals(key))) {
 				drawLine(
 					coords[0],

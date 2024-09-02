@@ -1,8 +1,9 @@
 package moctave.esmapper;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Planet {
 	public Planet(Node node) {
@@ -160,7 +161,7 @@ public class Planet {
 
 	private int tributeValue = 0;
 	private int tributeThreshold = 4000;
-	private HashMap<String, Integer> tributeFleets = new HashMap<>();
+	private Map<String, Integer> tributeFleets = new HashMap<>();
 
 	// Getters
 	public String getName() {
@@ -227,7 +228,7 @@ public class Planet {
 		return tributeThreshold;
 	}
 
-	public HashMap<String, Integer> getTributeFleets() {
+	public Map<String, Integer> getTributeFleets() {
 		return tributeFleets;
 	}
 

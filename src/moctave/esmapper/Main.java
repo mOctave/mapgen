@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.imageio.ImageIO;
 
 public class Main {
@@ -66,13 +67,13 @@ public class Main {
 	private static List<String> plugins = new ArrayList<>();
 
 	// Maps and viewports.
-	private static HashMap<String, GalacticMap> maps = new HashMap<>();
-	private static HashMap<String, Legend> legends = new HashMap<>();
+	private static Map<String, GalacticMap> maps = new HashMap<>();
+	private static Map<String, Legend> legends = new HashMap<>();
 	private static List<Viewport> viewports = new ArrayList<>();
 
 	// All defined objects.
-	private static HashMap<String, Color> colors = new HashMap<>();
-	private static HashMap<String, List<String>> eventLists = new HashMap<>();
+	private static Map<String, Color> colors = new HashMap<>();
+	private static Map<String, List<String>> eventLists = new HashMap<>();
 
 	public static void main(String[] args) {
 		System.out.println("Mapping Systems!");
