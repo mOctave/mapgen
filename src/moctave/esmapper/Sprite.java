@@ -30,6 +30,10 @@ public class Sprite {
 	private String name;
 	private double scale = 1;
 
+	public String toString() {
+		return String.format("%s @%.3fx", name, scale);
+	}
+
 	/**
 	 * Find an image file corresponding to this sprite.
 	 * Works by searching through plugins in reverse order and checking
@@ -51,7 +55,8 @@ public class Sprite {
 			File base = new File(dir + name);
 			try {
 				Pattern pattern = Pattern.compile(
-					base.getName().split("\\.")[0]+"[\\+\\-\\~]?\\.\\S+",
+					base.getName().split("\\.")[0].replace("/", "\\/")
+					+ "[\\+\\-\\~]?\\.\\S+",
 					Pattern.CASE_INSENSITIVE
 				);
 				for (File f : base.getParentFile().listFiles()) {

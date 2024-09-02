@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,11 +69,11 @@ public class GalacticMap extends DrawnItem {
 	private List<String> events = new ArrayList<>();
 
 	// Defined objects for this map.
-	private Map<String, StarSystem> systems = new HashMap<>();
-	private Map<String, Galaxy> galaxies = new HashMap<>();
-	private Map<String, Government> governments = new HashMap<>();
-	private Map<String, Wormhole> wormholes = new HashMap<>();
-	private Map<String, Planet> planets = new HashMap<>();
+	private Map<String, StarSystem> systems = new LinkedHashMap<>();
+	private Map<String, Galaxy> galaxies = new LinkedHashMap<>();
+	private Map<String, Government> governments = new LinkedHashMap<>();
+	private Map<String, Wormhole> wormholes = new LinkedHashMap<>();
+	private Map<String, Planet> planets = new LinkedHashMap<>();
 
 	@Override
 	public String getType() {
@@ -129,12 +130,14 @@ public class GalacticMap extends DrawnItem {
 		Logger.notify("Drawing map %s...", this.name);
 
 		for (Galaxy galaxy : galaxies.values()) {
-			drawSprite(
+			if (!drawSprite(
 				galaxy.getSprite(),
 				galaxy.getPosition().getX(),
 				galaxy.getPosition().getY(),
 				true
-			);
+			)) {
+				Logger.warn("Failed to draw sprite for galaxy %s.", galaxy.getName());
+			}
 		}
 
 		for (StarSystem system : systems.values()) {

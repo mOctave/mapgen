@@ -86,14 +86,14 @@ public abstract class DrawnItem {
 	/**
 	 * Draws an image sprite.
 	 */
-	public void drawSprite(Sprite sprite, double x, double y, boolean measureFromImageCenter) {
+	public boolean drawSprite(Sprite sprite, double x, double y, boolean measureFromImageCenter) {
 		BufferedImage img;
 		try {
 			File f = sprite.resolve();
 			
 			if (f == null) {
 				Logger.err("Invalid image sprite: %s.", sprite);
-				return;
+				return false;
 			}
 
 			img = ImageIO.read(f);
@@ -105,10 +105,10 @@ public abstract class DrawnItem {
 		} catch (IOException e) {
 			Logger.err("Invalid image sprite: %s.", sprite);
 			e.printStackTrace();
-			return;
+			return false;
 		} catch (NullPointerException e) {
 			Logger.err("Looking for sprite, found null value!");
-			return;
+			return false;
 		}
 
 		if (measureFromImageCenter) {
@@ -126,6 +126,8 @@ public abstract class DrawnItem {
 				null
 			);
 		}
+
+		return true;
 	}
 
 	/**

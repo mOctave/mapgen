@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -67,14 +67,14 @@ public class Main {
 	private static List<String> plugins = new ArrayList<>();
 
 	// Graphical components.
-	private static Map<String, GalacticMap> maps = new HashMap<>();
-	private static Map<String, Legend> legends = new HashMap<>();
+	private static Map<String, GalacticMap> maps = new LinkedHashMap<>();
+	private static Map<String, Legend> legends = new LinkedHashMap<>();
 	private static List<Viewport> viewports = new ArrayList<>();
 
 	// All defined objects.
-	private static Map<String, Color> colors = new HashMap<>();
-	private static Map<String, Event> events = new HashMap<>();
-	private static Map<String, List<String>> eventLists = new HashMap<>();
+	private static Map<String, Color> colors = new LinkedHashMap<>();
+	private static Map<String, Event> events = new LinkedHashMap<>();
+	private static Map<String, List<String>> eventLists = new LinkedHashMap<>();
 
 	public static void main(String[] args) {
 		System.out.println("Mapping Systems!");
