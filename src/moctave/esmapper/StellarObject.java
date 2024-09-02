@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StellarObject {
+	public static final String TYPE = "stellar object";
 	public StellarObject(Node node) {
 
 		// Names are optional for stellar objects.
@@ -17,41 +18,31 @@ public class StellarObject {
 				try {
 					setSprite(new Sprite(child));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete sprite node in stellar object definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("distance")) {
 				try {
-					try {
-						setDistance(Double.parseDouble(args.get(0)));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric stellar object distance.", child);
-					}
+					setDistance(Double.parseDouble(args.get(0)));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete distance node in stellar object definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("period")) {
 				try {
-					try {
-						setPeriod(Double.parseDouble(args.get(0)));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric stellar object period.", child);
-					}
+					setPeriod(Double.parseDouble(args.get(0)));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete period node in stellar object definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("offset")) {
 				try {
-					try {
-						setDistance(Double.parseDouble(args.get(0)));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric stellar object offset.", child);
-					}
+					setDistance(Double.parseDouble(args.get(0)));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete offset node in stellar object definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("object")) {
 				addChild(new StellarObject(child));

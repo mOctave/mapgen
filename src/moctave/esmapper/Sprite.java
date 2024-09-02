@@ -11,12 +11,13 @@ import java.util.regex.Pattern;
  * or animation information.
  */
 public class Sprite {
+	public static final String TYPE = "sprite";
 	public Sprite(Node node) {
 		// Assign name
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr("No filename in sprite node!", node);
+			Logger.nodeErr(Logger.MISSING_FILENAME, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
@@ -24,14 +25,11 @@ public class Sprite {
 			
 			if (child.getName().equals("scale")) {
 				try {
-					try {
-						scale = Double.parseDouble(args.get(0));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric sprite scale.", child);
-					}
+					scale = Double.parseDouble(args.get(0));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete scale node in sprite definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			}
 		}

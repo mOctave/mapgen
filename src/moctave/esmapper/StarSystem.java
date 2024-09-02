@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StarSystem {
+	public static final String TYPE = "system";
 	public StarSystem(Node node) {
 
 		// Assign name
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr("Unnamed system!", node);
+			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
@@ -24,22 +25,18 @@ public class StarSystem {
 				shrouded = true;
 			} else if (child.getName().equals("pos")) {
 				try {
-					try {
-						positionX = Double.parseDouble(args.get(0));
-						positionY = Double.parseDouble(args.get(1));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric system position.", child);
-					}
+					positionX = Double.parseDouble(args.get(0));
+					positionY = Double.parseDouble(args.get(1));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete position node in system definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("government")) {
 				try {
 					government = args.get(0);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete government node in system definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("attributes")) {
 				for (String arg : args) {
@@ -49,8 +46,7 @@ public class StarSystem {
 				try {
 					music = args.get(0);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete music node in system definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("object")) {
 				addObject(new StellarObject(child));

@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.util.List;
 
 public class Government {
+	public static final String TYPE = "government";
 	public Government(Node node) {
 
 		// Assign name
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr("Unnamed government!", node);
+			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {

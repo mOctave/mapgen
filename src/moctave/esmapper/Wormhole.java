@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 public class Wormhole {
+	public static final String TYPE = "wormhole";
 	public Wormhole(Node node) {
 
 		// Assign name
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr("Unnamed wormhole!", node);
+			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
@@ -22,8 +23,7 @@ public class Wormhole {
 				try {
 					displayName = args.get(0);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete display name node in wormhole definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("mappable")) {
 				mappable = true;
@@ -31,28 +31,10 @@ public class Wormhole {
 				try {
 					links.put(args.get(0), args.get(1));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete link node in wormhole definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("color")) {
-				if (args.size() >= 3) {
-					try {
-						color = new Color(
-							Float.parseFloat(args.get(0)),
-							Float.parseFloat(args.get(1)),
-							Float.parseFloat(args.get(2))
-						);
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric wormhole color.", child);
-					}
-				} else {
-					try {
-						color = Main.getColor(args.get(0));
-					} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete color node in wormhole definition.",
-						child);
-					}
-				}
+				color = Main.getColorFromArgs(args);
 			}
 		}
 	}

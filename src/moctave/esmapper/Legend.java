@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Legend extends DrawnItem {
+	public static final String TYPE = "legend";
 	public static final int ALIGN_LEFT = 0;
 	public static final int ALIGN_RIGHT = 1;
 
@@ -15,7 +16,7 @@ public class Legend extends DrawnItem {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr("Unnamed viewport!", node);
+			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
 		}
 
 		offset = new Point(0, 0);
@@ -25,22 +26,20 @@ public class Legend extends DrawnItem {
 
 			if (child.getName().equals("align")) {
 				if (args.size() < 1) {
-					Logger.nodeErr("Incomplete align node in legend definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				} else if (args.get(0).equals("left")) {
 					alignment = ALIGN_LEFT;
 				} else if (args.get(0).equals("right")) {
 					alignment = ALIGN_RIGHT;
 				} else {
-					Logger.nodeErr("Invalid legend alignment.", child);
+					Logger.nodeErr(Logger.WRONG_VALUE, TYPE, child);
 				}
 			} else if (child.getName().equals("header")) {
 				try {
 					texts.add(args.get(0));
 					rings.add(null);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete header node in legend definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("item")) {
 				try {
@@ -48,8 +47,7 @@ public class Legend extends DrawnItem {
 					args.remove(0);
 					rings.add(args);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete item node in legend definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			}
 		}

@@ -15,25 +15,22 @@ public class Logger {
 	public static final int NUMBER_FORMAT_INT = 2;
 	public static final int NUMBER_FORMAT_DOUBLE = 3;
 	public static final int OBJECT_CREATION_ERROR = 4;
+	public static final int UNNAMED_NODE = 5;
+	public static final int WRONG_VALUE = 6;
+	public static final int MISSING_FILENAME = 7;
+	public static final int FAILED_DRAWING = 8;
+
 	public static final String[] ERROR_MESSAGES = new String[]{
 		"Successful execution",
-		"Incomplete $NODENAME node",
+		"Incomplete $NODENAME node in $PARENT definition",
 		"Invalid number (integer) in $NODENAME node",
 		"Invalid number (double) in $NODENAME node",
-		"Exception thrown during $PARENT creation"
+		"Exception thrown during $PARENT creation",
+		"Unnamed $NODENAME node",
+		"Unexpected parameter for $NODENAME node",
+		"Missing filename in $NODENAME node",
+		"Failed to draw $NODENAME to $PARENT"
 	};
-
-	public static void nodeErr(String message, Node node) {
-		System.err.printf(
-			"%sNode Error on line %d of %s: %s%n\t(Node: %s)%s%n",
-			RED,
-			node.getLine(),
-			node.getFile().getName(),
-			message,
-			node.toString(),
-			RESET
-		);
-	}
 
 	public static void nodeErr(int errorType, String parent, Node node) {
 		try {

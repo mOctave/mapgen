@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GalacticMap extends DrawnItem {
+	public static final String TYPE = "map";
 
 	public GalacticMap(Node node) {
 		Point center = new Point(0, 0);
@@ -18,7 +19,7 @@ public class GalacticMap extends DrawnItem {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr("Unnamed map!", node);
+			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
@@ -26,45 +27,37 @@ public class GalacticMap extends DrawnItem {
 
 			if (child.getName().equals("size")) {
 				try {
-					try {
-						size = new Dimension(
-							Integer.parseInt(args.get(0)),
-							Integer.parseInt(args.get(1))
-						);
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric map size.", child);
-					}
+					size = new Dimension(
+						Integer.parseInt(args.get(0)),
+						Integer.parseInt(args.get(1))
+					);
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete size node in map definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("center")) {
 				try {
-					try {
-						center = new Point(
-							Integer.parseInt(args.get(0)),
-							Integer.parseInt(args.get(1))
-						);
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric map center.", child);
-					}
+					center = new Point(
+						Integer.parseInt(args.get(0)),
+						Integer.parseInt(args.get(1))
+					);
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete center node in map definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("paint")) {
 				try {
 					paintMode = args.get(0);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete paint node in map definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("event")) {
 				try {
 					events.add(args.get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete event node in map definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("event list")) {
 				try {
@@ -72,8 +65,7 @@ public class GalacticMap extends DrawnItem {
 						events.add(event);
 					}
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete event list node in map definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("plugins only")) {
 				pluginsOnly = true;

@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 public class Planet {
+	public static final String TYPE = "planet";
 	public Planet(Node node) {
 		// Names are optional for stellar objects.
-		if (node.getArgs().size() > 0)
+		try {
 			this.name = node.getArgs().get(0);
+		} catch (IndexOutOfBoundsException e) {
+			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+		}
 
 		for (Node child : node.getChildren()) {
 			String name = child.getName();
@@ -25,22 +29,19 @@ public class Planet {
 				try {
 					setMusic(args.get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete music node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (name.equals("description")) {
 				try {
 					setDescription(getDescription() + args.get(0) + "\n");
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete description node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (name.equals("spaceport")) {
 				try {
 					setSpaceportDescription(getSpaceportDescription() + args.get(0) + "\n");
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete spaceport node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (name.equals("port")) {
 				setPortNode(child);
@@ -48,76 +49,63 @@ public class Planet {
 				try {
 					setGovernment(args.get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete government node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (name.equals("shipyard")) {
 				try {
 					addShipyard(args.get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete shipyard node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (name.equals("outfitter")) {
 				try {
 					addOutfitter(args.get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete shipyard node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("required reputation")) {
 				try {
-					try {
-						setRequiredReputation(Double.parseDouble(args.get(0)));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric planet required reputation.", child);
-					}
+					setRequiredReputation(Double.parseDouble(args.get(0)));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete required reputation node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("bribe")) {
 				try {
-					try {
-						setBribe(Double.parseDouble(args.get(0)));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric planet bribe.", child);
-					}
+					setBribe(Double.parseDouble(args.get(0)));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete bribe node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("security")) {
 				try {
-					try {
-						setBribe(Double.parseDouble(args.get(0)));
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric planet security.", child);
-					}
+					setBribe(Double.parseDouble(args.get(0)));
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete security node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("wormhole")) {
 				try {
 					setWormhole(args.get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete security node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("tribute")) {
 				try {
 					try {
 						setTributeValue(Integer.parseInt(args.get(0)));
 					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric planet tribute value.", child);
+						Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
 					}
 					for (Node grand : child.getChildren()) {
 						if (grand.getName().equals("threshold")) {
 							try {
 								setTributeThreshold(Integer.parseInt(grand.getArgs().get(0)));
 							} catch (NumberFormatException e) {
-								Logger.nodeErr("Non-numeric planet tribute threshold.", grand);
+								Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, grand);
 							}
 						} else if (grand.getName().equals("fleet")) {
 							try {
@@ -126,13 +114,12 @@ public class Planet {
 									Integer.parseInt(grand.getArgs().get(1))
 								);
 							} catch (Exception e) {
-								Logger.nodeErr("Error adding tribute fleet to planet.", grand);
+								Logger.nodeErr(Logger.OBJECT_CREATION_ERROR, TYPE, grand);
 							}
 						}
 					}
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete tribute node in planet definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			}
 		}

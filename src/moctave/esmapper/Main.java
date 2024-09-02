@@ -133,8 +133,7 @@ public class Main {
 						));
 					}
 				} catch (Exception e) {
-					Logger.nodeErr("Invalid color definition.", node);
-					e.printStackTrace();
+					Logger.nodeErr(Logger.OBJECT_CREATION_ERROR, "color", node);
 				}
 			}
 		}
@@ -166,22 +165,19 @@ public class Main {
 
 					eventLists.put(node.getArgs().get(0), events);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete event list node in config.",
-						node);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("game directory")) {
 				try {
 					gameDir = node.getArgs().get(0);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete game directory node in config.",
-						node);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("plugin directory")) {
 				try {
 					plugins.add(node.getArgs().get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete plugin directory node in config.",
-						node);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
 				}
 			}
 		}
@@ -191,23 +187,20 @@ public class Main {
 				try {
 					maps.put(node.getArgs().get(0), new GalacticMap(node));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete map node in config.",
-						node);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("legend")) {
 				System.out.println("Adding legend " + node.getArgs().get(0));
 				try {
 					legends.put(node.getArgs().get(0), new Legend(node));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete legend node in config.",
-						node);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("viewport")) {
 				try {
 					viewports.add(new Viewport(node));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete viewport node in config.",
-						node);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
 				}
 			}
 		}

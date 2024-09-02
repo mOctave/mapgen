@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Viewport extends DrawnItem {
+	public static final String TYPE = "viewport";
 	public static final List<String> VALID_COMPONENTS = 
 		Arrays.asList(new String[]{"map", "image", "legend", "line", "oval", "rect", "text"});
 
@@ -16,7 +17,7 @@ public class Viewport extends DrawnItem {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr("Unnamed viewport!", node);
+			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
 		}
 
 		offset = new Point(0, 0);
@@ -26,24 +27,20 @@ public class Viewport extends DrawnItem {
 
 			if (child.getName().equals("size")) {
 				try {
-					try {
-						size = new Dimension(
-							Integer.parseInt(args.get(0)),
-							Integer.parseInt(args.get(1))
-						);
-					} catch (NumberFormatException e) {
-						Logger.nodeErr("Non-numeric system position.", child);
-					}
+					size = new Dimension(
+						Integer.parseInt(args.get(0)),
+						Integer.parseInt(args.get(1))
+					);
+				} catch (NumberFormatException e) {
+					Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete size node in viewport definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("file format")) {
 				try {
 					fileFormat = args.get(0);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr("Incomplete file format node in viewport definition.",
-						child);
+					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (VALID_COMPONENTS.contains(child.getName())) {
 				components.add(child);
@@ -94,7 +91,7 @@ public class Viewport extends DrawnItem {
 						flipMode
 					);
 				} catch (Exception e) {
-					Logger.nodeErr("Failed drawing map to viewport.", component);
+					Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
 				}
 			} else if (component.getName().equals("image")) {
 				System.out.println("Drawing image...");
@@ -107,7 +104,7 @@ public class Viewport extends DrawnItem {
 						false
 					);
 				} catch (Exception e) {
-					Logger.nodeErr("Failed drawing image sprite to viewport.", component);
+					Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
 				}
 			} else if (component.getName().equals("legend")) {
 				System.out.println("Drawing legend...");
@@ -127,7 +124,7 @@ public class Viewport extends DrawnItem {
 						);
 					}
 				} catch (Exception e) {
-					Logger.nodeErr("Failed drawing legend to viewport.", component);
+					Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
 				}
 			} else {
 				Color chosenColor = Color.WHITE;
@@ -148,7 +145,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr("Failed drawing line to viewport.", component);
+						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
 					}
 				} else if (component.getName().equals("oval")) {
 					System.out.println("Drawing oval...");
@@ -161,7 +158,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr("Failed drawing oval to viewport.", component);
+						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
 					}
 				} else if (component.getName().equals("rect")) {
 					System.out.println("Drawing rectangle...");
@@ -174,7 +171,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr("Failed drawing rectangle to viewport.", component);
+						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
 					}
 				} else if (component.getName().equals("text")) {
 					System.out.println("Drawing text...");
@@ -186,7 +183,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr("Failed drawing text to viewport.", component);
+						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
 					}
 				}
 			}
