@@ -1,0 +1,10 @@
+# MacOS annoying stuff
+.DS_Store
+
+# Ignore Java build files
+bin
+*.jar
+
+# Ignore the local folder. Intended for testing, so I don't dox myself, reveal
+# Easter eggs, or bloat the repo with unwanted files.
+local

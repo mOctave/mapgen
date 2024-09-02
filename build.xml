@@ -1,0 +1,32 @@
+<project default="compile">
+	<path id="umlDoclet.classpath">
+		<fileset dir=".">
+			<include name="umldoclet-*.jar"/>
+		</fileset>
+	</path>
+	<target name="compile">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin"/>
+		<copy todir="bin">
+			<fileset dir="assets"/>
+		</copy>
+	</target>
+	<target name="jar" depends="compile">
+		<jar destfile="ES Mapper.jar">
+			<fileset dir="bin"/>
+			<manifest>
+				<attribute name="Main-Class" value="moctave.esmapper.Main"/>
+			</manifest>
+		</jar>
+	</target>
+	<target name="javadoc">
+		<mkdir dir="docs"/>
+		<javadoc destdir="docs" sourcepath="src" access="private">
+			<!--<doclet name="nl.talsmasoftware.umldoclet.UMLDoclet" pathref="umlDoclet.classpath">
+			</doclet>-->
+		</javadoc>
+	</target>
+	<target name="run" depends="jar">
+		<java jar="ES Mapper.jar" fork="true"/>
+	</target>
+</project>
