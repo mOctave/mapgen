@@ -133,7 +133,7 @@ public class Main {
 						));
 					}
 				} catch (Exception e) {
-					Logger.nodeErr(Logger.OBJECT_CREATION_ERROR, "color", node);
+					Logger.nodeErr(Logger.ERROR_OBJECT_CREATION, "color", node);
 				}
 			}
 		}
@@ -165,19 +165,19 @@ public class Main {
 
 					eventLists.put(node.getArgs().get(0), events);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("game directory")) {
 				try {
 					gameDir = node.getArgs().get(0);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("plugin directory")) {
 				try {
 					plugins.add(node.getArgs().get(0));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "config", node);
 				}
 			}
 		}
@@ -187,20 +187,20 @@ public class Main {
 				try {
 					maps.put(node.getArgs().get(0), new GalacticMap(node));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("legend")) {
 				System.out.println("Adding legend " + node.getArgs().get(0));
 				try {
 					legends.put(node.getArgs().get(0), new Legend(node));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "config", node);
 				}
 			} else if (node.getName().equals("viewport")) {
 				try {
 					viewports.add(new Viewport(node));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, "config", node);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "config", node);
 				}
 			}
 		}
@@ -273,41 +273,6 @@ public class Main {
 
 	public static List<Node> getNodes() {
 		return nodes;
-	}
-
-	public static Color getColorFromArgs(List<String> args) {
-		Color color = null;
-
-		if (args.size() >= 4) {
-			try {
-				color = new Color(
-					Float.parseFloat(args.get(0)),
-					Float.parseFloat(args.get(1)),
-					Float.parseFloat(args.get(2)),
-					Float.parseFloat(args.get(3))
-				);
-			} catch (NumberFormatException e) {
-				Logger.err("Incorrectly formatted RGBA color.");
-			}
-		} else if (args.size() == 3) {
-			try {
-				color = new Color(
-					Float.parseFloat(args.get(0)),
-					Float.parseFloat(args.get(1)),
-					Float.parseFloat(args.get(2))
-				);
-			} catch (NumberFormatException e) {
-				Logger.err("Incorrectly formatted RGB color.");
-			}
-		} else {
-			try {
-				color = Main.getColor(args.get(0));
-			} catch (IndexOutOfBoundsException e) {
-			Logger.err("Incorrectly formatted color name.");
-			}
-		}
-
-		return color;
 	}
 
 	public static Legend getLegend(String key) {

@@ -1,8 +1,6 @@
 package moctave.esmapper;
 
 import java.awt.BasicStroke;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,30 +14,28 @@ public class Legend extends DrawnItem {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
-
-		offset = new Point(0, 0);
 
 		for (Node child : node.getChildren()) {
 			List<String> args = child.getArgs();
 
 			if (child.getName().equals("align")) {
 				if (args.size() < 1) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
 				} else if (args.get(0).equals("left")) {
 					alignment = ALIGN_LEFT;
 				} else if (args.get(0).equals("right")) {
 					alignment = ALIGN_RIGHT;
 				} else {
-					Logger.nodeErr(Logger.WRONG_VALUE, TYPE, child);
+					Logger.nodeErr(Logger.ERROR_WRONG_VALUE, TYPE, child);
 				}
 			} else if (child.getName().equals("header")) {
 				try {
 					texts.add(args.get(0));
 					rings.add(null);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("item")) {
 				try {
@@ -47,17 +43,17 @@ public class Legend extends DrawnItem {
 					args.remove(0);
 					rings.add(args);
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
 				}
 			}
 		}
 
-		size = new Dimension(
+		size = new RectCoordinate(
 			200,
 			60 + 20 * texts.size()
 		);
 
-		offset = new Point(0, 0);
+		offset = new RectCoordinate();
 		setupGraphics();
 	}
 
@@ -119,7 +115,7 @@ public class Legend extends DrawnItem {
 					i * 20 + 34,
 					10,
 					10,
-					Main.getColorFromArgs(rings.get(i))
+					Builder.resolveColor(rings.get(i))
 				);
 			}
 		}

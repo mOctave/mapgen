@@ -12,38 +12,14 @@ public class StellarObject {
 			this.name = node.getArgs().get(0);
 
 		for (Node child : node.getChildren()) {
-			List<String> args = child.getArgs();
-
 			if (child.getName().equals("sprite")) {
-				try {
-					setSprite(new Sprite(child));
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setSprite(Builder.asSprite(child, TYPE));
 			} else if (child.getName().equals("distance")) {
-				try {
-					setDistance(Double.parseDouble(args.get(0)));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setDistance(Builder.asDouble(child, TYPE));
 			} else if (child.getName().equals("period")) {
-				try {
-					setPeriod(Double.parseDouble(args.get(0)));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setPeriod(Builder.asDouble(child, TYPE));
 			} else if (child.getName().equals("offset")) {
-				try {
-					setDistance(Double.parseDouble(args.get(0)));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setOffset(Builder.asDouble(child, TYPE));
 			} else if (child.getName().equals("object")) {
 				addChild(new StellarObject(child));
 			}

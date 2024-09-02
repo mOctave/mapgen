@@ -3,13 +3,11 @@ package moctave.esmapper;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
@@ -33,10 +31,10 @@ public abstract class DrawnItem {
 	protected Image image;
 
 	/** The size of this item's canvas. */
-	protected Dimension size;
+	protected RectCoordinate size;
 
 	/** How far to offset game coordinates to match the canvas. */
-	protected Point offset;
+	protected RectCoordinate offset;
 
 	/**
 	 * What type of item this (eg "map" or "viewport").
@@ -267,7 +265,7 @@ public abstract class DrawnItem {
 	 */
 	public void fillCanvas(Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, (int) size.getWidth(), (int) size.getHeight());
+		graphics.fillRect(0, 0, (int) size.getX(), (int) size.getY());
 	}
 
 	/**
@@ -276,8 +274,8 @@ public abstract class DrawnItem {
 	 */
 	public void setupGraphics() {
 		image = new BufferedImage(
-			(int) size.getWidth(),
-			(int) size.getHeight(),
+			(int) size.getX(),
+			(int) size.getY(),
 			BufferedImage.TYPE_INT_ARGB
 		);
 
@@ -315,11 +313,11 @@ public abstract class DrawnItem {
 	}
 
 	// Getters and setters
-	public Dimension getSize() {
+	public RectCoordinate getSize() {
 		return size;
 	}
 
-	public Point getOffset() {
+	public RectCoordinate getOffset() {
 		return offset;
 	}
 
@@ -331,11 +329,11 @@ public abstract class DrawnItem {
 		return image;
 	}
 
-	public void setSize(Dimension size) {
+	public void setSize(RectCoordinate size) {
 		this.size = size;
 	}
 
-	public void setOffset(Point offset) {
+	public void setOffset(RectCoordinate offset) {
 		this.offset = offset;
 	}
 

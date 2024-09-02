@@ -1,8 +1,6 @@
 package moctave.esmapper;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,37 +15,20 @@ public class Viewport extends DrawnItem {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
 
-		offset = new Point(0, 0);
-
 		for (Node child : node.getChildren()) {
-			List<String> args = child.getArgs();
-
 			if (child.getName().equals("size")) {
-				try {
-					size = new Dimension(
-						Integer.parseInt(args.get(0)),
-						Integer.parseInt(args.get(1))
-					);
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				size = Builder.asCoordinate(child, TYPE);
 			} else if (child.getName().equals("file format")) {
-				try {
-					fileFormat = args.get(0);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				fileFormat = Builder.asString(child, TYPE);
 			} else if (VALID_COMPONENTS.contains(child.getName())) {
 				components.add(child);
 			}
 		}
 
-		offset = new Point(0, 0);
+		offset = new RectCoordinate();
 		setupGraphics();
 		fillCanvas(Color.BLACK);
 	}
@@ -91,7 +72,7 @@ public class Viewport extends DrawnItem {
 						flipMode
 					);
 				} catch (Exception e) {
-					Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
+					Logger.nodeErr(Logger.ERROR_DRAWING, TYPE, component);
 				}
 			} else if (component.getName().equals("image")) {
 				System.out.println("Drawing image...");
@@ -104,7 +85,7 @@ public class Viewport extends DrawnItem {
 						false
 					);
 				} catch (Exception e) {
-					Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
+					Logger.nodeErr(Logger.ERROR_DRAWING, TYPE, component);
 				}
 			} else if (component.getName().equals("legend")) {
 				System.out.println("Drawing legend...");
@@ -119,18 +100,18 @@ public class Viewport extends DrawnItem {
 					} else {
 						drawImage(
 							legend.getImage(),
-							size.getWidth() - 200,
+							size.getX() - 200,
 							Double.parseDouble(args.get(1))
 						);
 					}
 				} catch (Exception e) {
-					Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
+					Logger.nodeErr(Logger.ERROR_DRAWING, TYPE, component);
 				}
 			} else {
 				Color chosenColor = Color.WHITE;
 				for (Node child : component.getChildren()) {
 					if (child.getName().equals("color")) {
-						chosenColor = Main.getColorFromArgs(child.getArgs());
+						chosenColor = Builder.asColor(child, TYPE);
 					}
 				}
 
@@ -145,7 +126,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
+						Logger.nodeErr(Logger.ERROR_DRAWING, TYPE, component);
 					}
 				} else if (component.getName().equals("oval")) {
 					System.out.println("Drawing oval...");
@@ -158,7 +139,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
+						Logger.nodeErr(Logger.ERROR_DRAWING, TYPE, component);
 					}
 				} else if (component.getName().equals("rect")) {
 					System.out.println("Drawing rectangle...");
@@ -171,7 +152,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
+						Logger.nodeErr(Logger.ERROR_DRAWING, TYPE, component);
 					}
 				} else if (component.getName().equals("text")) {
 					System.out.println("Drawing text...");
@@ -183,7 +164,7 @@ public class Viewport extends DrawnItem {
 							chosenColor
 						);
 					} catch (Exception e) {
-						Logger.nodeErr(Logger.FAILED_DRAWING, TYPE, component);
+						Logger.nodeErr(Logger.ERROR_DRAWING, TYPE, component);
 					}
 				}
 			}

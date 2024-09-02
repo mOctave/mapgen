@@ -12,7 +12,7 @@ public class Planet {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
@@ -24,88 +24,42 @@ public class Planet {
 					addAttribute(attribute);
 				}
 			} else if (name.equals("landscape")) {
-				setLandscape(new Sprite(child));
+				setLandscape(Builder.asSprite(child, TYPE));
 			} else if (name.equals("music")) {
-				try {
-					setMusic(args.get(0));
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setMusic(Builder.asString(child, TYPE));
 			} else if (name.equals("description")) {
-				try {
-					setDescription(getDescription() + args.get(0) + "\n");
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setDescription(getDescription() + Builder.asString(child, TYPE) + "\n");
 			} else if (name.equals("spaceport")) {
-				try {
-					setSpaceportDescription(getSpaceportDescription() + args.get(0) + "\n");
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setSpaceportDescription(getSpaceportDescription() + Builder.asString(child, TYPE) + "\n");
 			} else if (name.equals("port")) {
 				setPortNode(child);
 			} else if (name.equals("government")) {
-				try {
-					setGovernment(args.get(0));
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setGovernment(Builder.asString(child, TYPE));
 			} else if (name.equals("shipyard")) {
-				try {
-					addShipyard(args.get(0));
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				addShipyard(Builder.asString(child, TYPE));
 			} else if (name.equals("outfitter")) {
-				try {
-					addOutfitter(args.get(0));
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				addOutfitter(Builder.asString(child, TYPE));
 			} else if (child.getName().equals("required reputation")) {
-				try {
-					setRequiredReputation(Double.parseDouble(args.get(0)));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setRequiredReputation(Builder.asDouble(child, TYPE));
 			} else if (child.getName().equals("bribe")) {
-				try {
-					setBribe(Double.parseDouble(args.get(0)));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setBribe(Builder.asDouble(child, TYPE));
 			} else if (child.getName().equals("security")) {
-				try {
-					setBribe(Double.parseDouble(args.get(0)));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setSecurity(Builder.asDouble(child, TYPE));
 			} else if (child.getName().equals("wormhole")) {
-				try {
-					setWormhole(args.get(0));
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setWormhole(Builder.asString(child, TYPE));
 			} else if (child.getName().equals("tribute")) {
 				try {
 					try {
 						setTributeValue(Integer.parseInt(args.get(0)));
 					} catch (NumberFormatException e) {
-						Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
+						Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_INT, TYPE, child);
 					}
 					for (Node grand : child.getChildren()) {
 						if (grand.getName().equals("threshold")) {
 							try {
 								setTributeThreshold(Integer.parseInt(grand.getArgs().get(0)));
 							} catch (NumberFormatException e) {
-								Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, grand);
+								Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_INT, TYPE, grand);
 							}
 						} else if (grand.getName().equals("fleet")) {
 							try {
@@ -114,12 +68,12 @@ public class Planet {
 									Integer.parseInt(grand.getArgs().get(1))
 								);
 							} catch (Exception e) {
-								Logger.nodeErr(Logger.OBJECT_CREATION_ERROR, TYPE, grand);
+								Logger.nodeErr(Logger.ERROR_OBJECT_CREATION, TYPE, grand);
 							}
 						}
 					}
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
 				}
 			}
 		}

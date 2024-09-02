@@ -17,20 +17,12 @@ public class Sprite {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.MISSING_FILENAME, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_MISSING_FILENAME, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
-			List<String> args = child.getArgs();
-			
 			if (child.getName().equals("scale")) {
-				try {
-					scale = Double.parseDouble(args.get(0));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setScale(Builder.asDouble(child, TYPE));
 			}
 		}
 	}

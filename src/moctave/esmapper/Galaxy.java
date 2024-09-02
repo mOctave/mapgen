@@ -1,7 +1,5 @@
 package moctave.esmapper;
 
-import java.util.List;
-
 public class Galaxy {
 	public static final String TYPE = "galaxy";
 	public Galaxy(Node node) {
@@ -10,34 +8,20 @@ public class Galaxy {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
-			List<String> args = child.getArgs();
-
 			if (child.getName().equals("pos")) {
-				try {
-					positionX = Double.parseDouble(args.get(0));
-					positionY = Double.parseDouble(args.get(1));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				position = Builder.asCoordinate(child, TYPE);
 			} else if (child.getName().equals("sprite")) {
-				try {
-					sprite = new Sprite(child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				sprite = Builder.asSprite(child, TYPE);
 			}
 		}
 	}
 
 	private String name;
-	private double positionX = 0;
-	private double positionY = 0;
+	private RectCoordinate position = new RectCoordinate();
 	
 	private Sprite sprite;
 
@@ -45,12 +29,8 @@ public class Galaxy {
 		return name;
 	}
 
-	public double getX() {
-		return positionX;
-	}
-
-	public double getY() {
-		return positionY;
+	public RectCoordinate getPosition() {
+		return position;
 	}
 
 	public Sprite getSprite() {

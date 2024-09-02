@@ -13,28 +13,24 @@ public class Wormhole {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
 			List<String> args = child.getArgs();
 
 			if (child.getName().equals("display name")) {
-				try {
-					displayName = args.get(0);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				displayName = Builder.asString(child, TYPE);
 			} else if (child.getName().equals("mappable")) {
 				mappable = true;
 			} else if (child.getName().equals("link")) {
 				try {
 					links.put(args.get(0), args.get(1));
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("color")) {
-				color = Main.getColorFromArgs(args);
+				color = Builder.asColor(child, TYPE);
 			}
 		}
 	}

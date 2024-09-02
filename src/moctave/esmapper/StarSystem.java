@@ -11,7 +11,7 @@ public class StarSystem {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
@@ -24,30 +24,15 @@ public class StarSystem {
 			} else if (child.getName().equals("shrouded")) {
 				shrouded = true;
 			} else if (child.getName().equals("pos")) {
-				try {
-					positionX = Double.parseDouble(args.get(0));
-					positionY = Double.parseDouble(args.get(1));
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_DOUBLE, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setPosition(Builder.asCoordinate(child, TYPE));
 			} else if (child.getName().equals("government")) {
-				try {
-					government = args.get(0);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setGovernment(Builder.asString(child, TYPE));
 			} else if (child.getName().equals("attributes")) {
 				for (String arg : args) {
 					addAttribute(arg);
 				}
 			} else if (child.getName().equals("music")) {
-				try {
-					music = args.get(0);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				setMusic(Builder.asString(child, TYPE));
 			} else if (child.getName().equals("object")) {
 				addObject(new StellarObject(child));
 			} else if (child.getName().equals("link")) {
@@ -64,8 +49,7 @@ public class StarSystem {
 	private boolean hidden = false;
 	private boolean shrouded = false;
 
-	private double positionX;
-	private double positionY;
+	private RectCoordinate position;
 
 	private String government = "";
 	private List<String> attributes = new ArrayList<>();
@@ -87,10 +71,9 @@ public class StarSystem {
 		if (attributeSummary.isEmpty()) attributeSummary = ", ";
 
 		String str = String.format(
-			"StarSystem{name: %s, position: (%d, %d) attributes: %sgovernment: %s, objects: %d}",
+			"StarSystem{name: %s, position: %s, attributes: %sgovernment: %s, objects: %d}",
 			name,
-			(int) positionX,
-			(int) positionY,
+			position,
 			attributeSummary,
 			government,
 			objects.size()
@@ -165,12 +148,16 @@ public class StarSystem {
 		return shrouded;
 	}
 
+	public RectCoordinate getPosition() {
+		return position;
+	}
+
 	public double getX() {
-		return positionX;
+		return position.getX();
 	}
 
 	public double getY() {
-		return positionY;
+		return position.getY();
 	}
 
 	public String getGovernment() {
@@ -209,17 +196,8 @@ public class StarSystem {
 		this.shrouded = shrouded;
 	}
 
-	public void setPosition(double x, double y) {
-		this.positionX = x;
-		this.positionY = y;
-	}
-
-	public void setX(double x) {
-		this.positionX = x;
-	}
-
-	public void setY(double y) {
-		this.positionY = y;
+	public void setPosition(RectCoordinate position) {
+		this.position = position;
 	}
 
 	public void setGovernment(String government) {

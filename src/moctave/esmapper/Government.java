@@ -1,7 +1,6 @@
 package moctave.esmapper;
 
 import java.awt.Color;
-import java.util.List;
 
 public class Government {
 	public static final String TYPE = "government";
@@ -11,14 +10,13 @@ public class Government {
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
-			List<String> args = child.getArgs();
 
 			if (child.getName().equals("color")) {
-				color = Main.getColorFromArgs(args);
+				color = Builder.asColor(child, TYPE);
 			}
 		}
 	}

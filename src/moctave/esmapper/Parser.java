@@ -124,7 +124,21 @@ public class Parser {
 		String nodeName = data.get(0);
 		data.remove(0);
 
-		return new Node(nodeName, data, new ArrayList<>(), lineNumber, file, isPlugin);
+		int flag = Node.NORMAL;
+
+		// Check for flags
+		if (nodeName.equals("add")) {
+			flag = Node.ADD;
+			nodeName = data.get(0);
+			data.remove(0);
+		} else if (nodeName.equals("remove")) {
+			flag = Node.REMOVE;
+			nodeName = data.get(0);
+			data.remove(0);
+		}
+
+
+		return new Node(nodeName, flag, data, new ArrayList<>(), lineNumber, file, isPlugin);
 	}
 
 	public static String trimComments(String line) {

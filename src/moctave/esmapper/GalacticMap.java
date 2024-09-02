@@ -2,8 +2,6 @@ package moctave.esmapper;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,59 +11,33 @@ public class GalacticMap extends DrawnItem {
 	public static final String TYPE = "map";
 
 	public GalacticMap(Node node) {
-		Point center = new Point(0, 0);
+		RectCoordinate center = new RectCoordinate();
 
 		// Assign name
 		try {
 			this.name = node.getArgs().get(0);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.nodeErr(Logger.UNNAMED_NODE, TYPE, node);
+			Logger.nodeErr(Logger.ERROR_UNNAMED_NODE, TYPE, node);
 		}
 
 		for (Node child : node.getChildren()) {
 			List<String> args = child.getArgs();
 
 			if (child.getName().equals("size")) {
-				try {
-					size = new Dimension(
-						Integer.parseInt(args.get(0)),
-						Integer.parseInt(args.get(1))
-					);
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				size = Builder.asCoordinate(child, TYPE);
 			} else if (child.getName().equals("center")) {
-				try {
-					center = new Point(
-						Integer.parseInt(args.get(0)),
-						Integer.parseInt(args.get(1))
-					);
-				} catch (NumberFormatException e) {
-					Logger.nodeErr(Logger.NUMBER_FORMAT_INT, TYPE, child);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				center = Builder.asCoordinate(child, TYPE);
 			} else if (child.getName().equals("paint")) {
-				try {
-					paintMode = args.get(0);
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				paintMode = Builder.asString(child, TYPE);
 			} else if (child.getName().equals("event")) {
-				try {
-					events.add(args.get(0));
-				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
-				}
+				paintMode = Builder.asString(child, TYPE);
 			} else if (child.getName().equals("event list")) {
 				try {
 					for (String event : Main.getEventList(args.get(0))) {
 						events.add(event);
 					}
 				} catch (IndexOutOfBoundsException e) {
-					Logger.nodeErr(Logger.INCOMPLETE_NODE, TYPE, child);
+					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, TYPE, child);
 				}
 			} else if (child.getName().equals("plugins only")) {
 				pluginsOnly = true;
@@ -78,9 +50,9 @@ public class GalacticMap extends DrawnItem {
 			}
 		}
 
-		offset = new Point(
-			(int) (size.getWidth() / 2 - center.getX()),
-			(int) (size.getHeight() / 2 - center.getY())
+		offset = new RectCoordinate(
+			(int) (size.getX() / 2 - center.getX()),
+			(int) (size.getY() / 2 - center.getY())
 		);
 
 		setupGraphics();
@@ -152,8 +124,8 @@ public class GalacticMap extends DrawnItem {
 		for (Galaxy galaxy : galaxies.values()) {
 			drawSprite(
 				galaxy.getSprite(),
-				galaxy.getX(),
-				galaxy.getY(),
+				galaxy.getPosition().getX(),
+				galaxy.getPosition().getY(),
 				true
 			);
 		}
