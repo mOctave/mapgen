@@ -172,7 +172,7 @@ public class GalacticMap extends DrawnItem {
 		}
 
 		for (Wormhole wormhole : wormholes.values()) {
-			if (wormhole.isMappable())
+			if (wormhole.isMappable() || includeUnmappableWormholes)
 				drawWormhole(wormhole);
 		}
 
@@ -210,6 +210,7 @@ public class GalacticMap extends DrawnItem {
 
 	public void drawWormhole(Wormhole wormhole) {
 		graphics.setStroke(new BasicStroke(1));
+		Map<String, String> done = new HashMap<>();
 		for (String key : wormhole.getLinks().keySet()) {
 			StarSystem sys1 = getSystem(key);
 
@@ -227,8 +228,30 @@ public class GalacticMap extends DrawnItem {
 			if (!includeHidden && (sys1.isHidden() || sys2.isHidden()))
 				continue;
 
+			// Hide the Eye and other wormholes that aren't attached to planets.
+			if (!includeUnmappableWormholes) {
+				boolean missingPlanet = true;
+
+				for (StellarObject obj : sys1.getAllNamedObjects()) {
+					Planet planet = getPlanet(obj.getName());
+
+					if (
+						planet.getWormhole() != null
+						&& planet.getWormhole().equals(wormhole.getName())
+					) {
+						missingPlanet = false;
+						break;
+					}
+				}
+
+
+				if (missingPlanet) {
+					continue;
+				}
+			}
+
+
 			// Draw link
-			Map<String, String> done = new HashMap<>();
 			if (!(done.containsKey(val) && done.get(val).equals(key))) {
 				drawLine(
 					coords[0],

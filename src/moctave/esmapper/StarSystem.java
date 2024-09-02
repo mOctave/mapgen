@@ -78,6 +78,31 @@ public class StarSystem {
 	private List<StellarObject> objects = new ArrayList<>();
 	private List<String> hyperlinks = new ArrayList<>();
 
+	public String toString() {
+		String attributeSummary = "";
+
+		if (inaccessible) attributeSummary += "inaccessible, ";
+		if (hidden) attributeSummary += "hidden, ";
+		if (shrouded) attributeSummary += "shrouded, ";
+
+		for (String attribute : attributes)
+			attributeSummary += attribute + ", ";
+
+		if (attributeSummary.isEmpty()) attributeSummary = ", ";
+
+		String str = String.format(
+			"StarSystem{name: %s, position: (%d, %d) attributes: %sgovernment: %s, objects: %d}",
+			name,
+			(int) positionX,
+			(int) positionY,
+			attributeSummary,
+			government,
+			objects.size()
+		);
+
+		return str;
+	}
+
 	/**
 	 * A system is marked as uninhabited when:
 	 * (1) There are no named objects in the system, or
@@ -90,7 +115,6 @@ public class StarSystem {
 	public boolean isUninhabited(GalacticMap map) {
 		List<StellarObject> namedObjects = getAllNamedObjects();
 		if (namedObjects.size() == 0) {
-			System.out.println("No named objects. Uninhabited!");
 			return true;
 		}
 		
@@ -106,7 +130,7 @@ public class StarSystem {
 	}
 
 	public List<StellarObject> getAllNamedObjects() {
-		List<StellarObject> uncheckedObjects = getObjects();
+		List<StellarObject> uncheckedObjects = new ArrayList<>(getObjects());
 		List<StellarObject> namedObjects = new ArrayList<>();
 		
 		while (uncheckedObjects.size() > 0) {

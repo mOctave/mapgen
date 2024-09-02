@@ -11,6 +11,18 @@ public class Logger {
 	public static final String WHITE = "\u001B[37m";
 	public static final String RESET = "\u001B[0m";
 
+	public static final int INCOMPLETE_NODE = 1;
+	public static final int NUMBER_FORMAT_INT = 2;
+	public static final int NUMBER_FORMAT_DOUBLE = 3;
+	public static final int OBJECT_CREATION_ERROR = 4;
+	public static final String[] ERROR_MESSAGES = new String[]{
+		"Successful execution",
+		"Incomplete $NODENAME node",
+		"Invalid number (integer) in $NODENAME node",
+		"Invalid number (double) in $NODENAME node",
+		"Exception thrown during $PARENT creation"
+	};
+
 	public static void nodeErr(String message, Node node) {
 		System.err.printf(
 			"%sNode Error on line %d of %s: %s%n\t(Node: %s)%s%n",
@@ -21,6 +33,35 @@ public class Logger {
 			node.toString(),
 			RESET
 		);
+	}
+
+	public static void nodeErr(int errorType, String parent, Node node) {
+		try {
+			System.err.printf(
+				"%sNode Error on line %d of %s: %s%n\t(Node: %s)%s%n",
+				RED,
+				node.getLine(),
+				node.getFile().getName(),
+				formatErrorCode(errorType, parent, node),
+				node.toString(),
+				RESET
+			);
+		} catch (IndexOutOfBoundsException e) {
+			err(
+				"Invalid node error type! Error Type: %d, Parent: %s, Node: %s",
+				errorType,
+				parent,
+				node.toString()
+			);
+			e.printStackTrace();
+		}
+	}
+
+	public static String formatErrorCode(int errorType, String parent, Node node) {
+		String msg = ERROR_MESSAGES[errorType];
+		msg.replace("$NODENAME", node.getName());
+		msg.replace("$PARENT", parent);
+		return msg;
 	}
 
 	public static void nodeWarn(String message, Node node) {
