@@ -88,10 +88,10 @@ public abstract class DrawnItem {
 	/**
 	 * Draws an image sprite.
 	 */
-	public void drawSprite(String sprite, double x, double y, double scale) {
+	public void drawSprite(Sprite sprite, double x, double y, boolean measureFromImageCenter) {
 		BufferedImage img;
 		try {
-			File f = Main.getSpriteByName(sprite);
+			File f = sprite.resolve();
 			
 			if (f == null) {
 				Logger.err("Invalid image sprite: %s.", sprite);
@@ -100,22 +100,34 @@ public abstract class DrawnItem {
 
 			img = ImageIO.read(f);
 			img.getScaledInstance(
-				(int) (img.getWidth() * scale),
-				(int) (img.getHeight() * scale),
+				(int) (img.getWidth() * sprite.getScale()),
+				(int) (img.getHeight() * sprite.getScale()),
 				BufferedImage.SCALE_DEFAULT
 			);
 		} catch (IOException e) {
 			Logger.err("Invalid image sprite: %s.", sprite);
 			e.printStackTrace();
 			return;
+		} catch (NullPointerException e) {
+			Logger.err("Looking for sprite, found null value!");
+			return;
 		}
 
-		graphics.drawImage(
-			img,
-			(int) (relativeX(x) - img.getWidth() / 2),
-			(int) (relativeY(y) - img.getHeight() / 2),
-			null
-		);
+		if (measureFromImageCenter) {
+			graphics.drawImage(
+				img,
+				(int) (relativeX(x) - img.getWidth() / 2),
+				(int) (relativeY(y) - img.getHeight() / 2),
+				null
+			);
+		} else {
+			graphics.drawImage(
+				img,
+				relativeX(x),
+				relativeY(y),
+				null
+			);
+		}
 	}
 
 	/**

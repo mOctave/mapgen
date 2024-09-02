@@ -29,18 +29,7 @@ public class Galaxy {
 				}
 			} else if (child.getName().equals("sprite")) {
 				try {
-					sprite = args.get(0);
-
-					for (Node grand : child.getChildren()) {
-						if (grand.getName().equals("scale")) {
-							try {
-								scale = Double.parseDouble(grand.getArgs().get(0));
-							} catch (NumberFormatException e) {
-								Logger.nodeErr("Non-numeric image scale.", grand);
-							}
-						}
-					}
-					
+					sprite = new Sprite(child);
 				} catch (IndexOutOfBoundsException e) {
 					Logger.nodeErr("Incomplete sprite node in galaxy definition.",
 						child);
@@ -53,8 +42,7 @@ public class Galaxy {
 	private double positionX = 0;
 	private double positionY = 0;
 	
-	private String sprite;
-	private double scale = 1;
+	private Sprite sprite;
 
 	public String getName() {
 		return name;
@@ -68,11 +56,7 @@ public class Galaxy {
 		return positionY;
 	}
 
-	public String getSprite() {
+	public Sprite getSprite() {
 		return sprite;
-	}
-
-	public double getScale() {
-		return scale;
 	}
 }

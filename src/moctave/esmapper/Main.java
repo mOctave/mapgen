@@ -6,10 +6,8 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 public class Main {
@@ -68,7 +66,7 @@ public class Main {
 	private static List<String> plugins = new ArrayList<>();
 
 	// Maps and viewports.
-	private static HashMap<String, Map> maps = new HashMap<>();
+	private static HashMap<String, GalacticMap> maps = new HashMap<>();
 	private static HashMap<String, Legend> legends = new HashMap<>();
 	private static List<Viewport> viewports = new ArrayList<>();
 
@@ -141,7 +139,7 @@ public class Main {
 		}
 		System.out.printf("Total colors: %d.%n", colors.size());
 
-		for (Map map : maps.values()) {
+		for (GalacticMap map : maps.values()) {
 			map.load();
 			map.draw();
 		}
@@ -190,7 +188,7 @@ public class Main {
 		for (Node node : configNodes) {
 			if (node.getName().equals("map")) {
 				try {
-					maps.put(node.getArgs().get(0), new Map(node));
+					maps.put(node.getArgs().get(0), new GalacticMap(node));
 				} catch (IndexOutOfBoundsException e) {
 					Logger.nodeErr("Incomplete map node in config.",
 						node);
@@ -275,44 +273,12 @@ public class Main {
 		return gameDir;
 	}
 
-	public static List<Node> getNodes() {
-		return nodes;
+	public static List<String> getPlugins() {
+		return plugins;
 	}
 
-	public static File getSpriteByName(String name) {
-		// Go through plugins in reverse order for the search, then do vanilla content.
-		List<String> paths = new ArrayList<>(plugins);
-		Collections.reverse(paths);
-		paths.add(gameDir);
-
-		for (String path : paths) {
-			String dir = path;
-			if (!dir.endsWith("/"))
-				dir += "/";
-
-			dir += "images/";
-
-			File base = new File(dir + name);
-			try {
-				Pattern pattern = Pattern.compile(
-					base.getName().split("\\.")[0]+"[\\+\\-\\~]?\\.\\S+",
-					Pattern.CASE_INSENSITIVE
-				);
-				for (File f : base.getParentFile().listFiles()) {
-					if (pattern.matcher(f.getName()).find()) {
-						if (f.exists()) {
-							return f;
-						}
-					}
-				}
-			} catch (NullPointerException e) {
-				// Plugin is likely missing an images directory,
-				// nothing to be concerned about.
-			}
-		}
-
-		Logger.warn("Could not find sprite with name %s.", name);
-		return null;
+	public static List<Node> getNodes() {
+		return nodes;
 	}
 
 	public static Color getColorFromArgs(List<String> args) {
@@ -360,8 +326,8 @@ public class Main {
 		return l;
 	}
 
-	public static Map getMap(String key) {
-		Map m = maps.get(key);
+	public static GalacticMap getMap(String key) {
+		GalacticMap m = maps.get(key);
 
 		if (m == null) {
 			Logger.warn("No map with name %s.", key);

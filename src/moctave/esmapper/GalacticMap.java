@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Map extends DrawnItem {
+public class GalacticMap extends DrawnItem {
 
-	public Map(Node node) {
+	public GalacticMap(Node node) {
 		Point center = new Point(0, 0);
 
 		// Assign name
@@ -107,6 +107,7 @@ public class Map extends DrawnItem {
 	private HashMap<String, Galaxy> galaxies = new HashMap<>();
 	private HashMap<String, Government> governments = new HashMap<>();
 	private HashMap<String, Wormhole> wormholes = new HashMap<>();
+	private HashMap<String, Planet> planets = new HashMap<>();
 
 	@Override
 	public String getType() {
@@ -131,6 +132,8 @@ public class Map extends DrawnItem {
 				addGovernment(new Government(node));
 			} else if (node.getName().equals("wormhole")) {
 				addWormhole(new Wormhole(node));
+			} else if (node.getName().equals("planet")) {
+				addPlanet(new Planet(node));
 			}
 		}
 
@@ -138,6 +141,7 @@ public class Map extends DrawnItem {
 		System.out.printf("Total galaxies: %d.%n", galaxies.size());
 		System.out.printf("Total systems: %d.%n", systems.size());
 		System.out.printf("Total wormholes: %d.%n", wormholes.size());
+		System.out.printf("Total planets: %d.%n", planets.size());
 
 		Logger.confirm(
 			"Finished loading data for map %s in %.3f seconds.",
@@ -157,7 +161,7 @@ public class Map extends DrawnItem {
 				galaxy.getSprite(),
 				galaxy.getX(),
 				galaxy.getY(),
-				galaxy.getScale()
+				true
 			);
 		}
 
@@ -189,14 +193,13 @@ public class Map extends DrawnItem {
 			Main.getColor("map name")
 		);
 
-		graphics.setColor(getGovernment(system.getGovernment()).getColor());
 		graphics.setStroke(new BasicStroke(3));
 		drawOval(
 			system.getX() - 5,
 			system.getY() - 5,
 			10,
 			10,
-			getGovernment(system.getGovernment()).getColor()
+			selectColor(system, paintMode)
 		);
 
 		for (String link : system.getHyperlinks()) {
@@ -313,6 +316,13 @@ public class Map extends DrawnItem {
 	}
 
 
+	public Color selectColor(StarSystem system, String paintMode) {
+		if (!paintUninhabited() && system.isUninhabited(this))
+			return getGovernment("Uninhabited").getColor();
+
+		// Default is government paint
+		return getGovernment(system.getGovernment()).getColor();
+	}
 
 	// Getters and setters
 	public boolean pluginsOnly() {
@@ -357,6 +367,10 @@ public class Map extends DrawnItem {
 		wormholes.put(wormhole.getName(), wormhole);
 	}
 
+	public void addPlanet(Planet planet) {
+		planets.put(planet.getName(), planet);
+	}
+
 	public StarSystem getSystem(String key) {
 		StarSystem s = systems.get(key);
 
@@ -396,5 +410,15 @@ public class Map extends DrawnItem {
 		}
 
 		return w;
+	}
+
+	public Planet getPlanet(String key) {
+		Planet p = planets.get(key);
+
+		if (p == null) {
+			Logger.warn("No planet with name %s.", key);
+		}
+
+		return p;
 	}
 }

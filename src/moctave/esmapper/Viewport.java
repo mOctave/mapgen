@@ -2,13 +2,10 @@ package moctave.esmapper;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Point;
-import java.io.File;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
-import javax.imageio.ImageIO;
 
 public class Viewport extends DrawnItem {
 	public static final List<String> VALID_COMPONENTS = 
@@ -102,12 +99,12 @@ public class Viewport extends DrawnItem {
 			} else if (component.getName().equals("image")) {
 				System.out.println("Drawing image...");
 				try {
-					File f = Main.getSpriteByName(args.get(0));
-					Image img = ImageIO.read(f);
-					drawImage(
-						img,
+					Sprite sprite = new Sprite(component);
+					drawSprite(
+						sprite,
 						Double.parseDouble(args.get(1)),
-						Double.parseDouble(args.get(2))
+						Double.parseDouble(args.get(2)),
+						false
 					);
 				} catch (Exception e) {
 					Logger.nodeErr("Failed drawing image sprite to viewport.", component);

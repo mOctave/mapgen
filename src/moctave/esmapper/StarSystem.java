@@ -52,6 +52,8 @@ public class StarSystem {
 					Logger.nodeErr("Incomplete music node in system definition.",
 						child);
 				}
+			} else if (child.getName().equals("object")) {
+				addObject(new StellarObject(child));
 			} else if (child.getName().equals("link")) {
 				for (String arg : args) {
 					addHyperlink(arg);
@@ -73,7 +75,58 @@ public class StarSystem {
 	private List<String> attributes = new ArrayList<>();
 	private String music;
 
+	private List<StellarObject> objects = new ArrayList<>();
 	private List<String> hyperlinks = new ArrayList<>();
+
+	/**
+	 * A system is marked as uninhabited when:
+	 * (1) There are no named objects in the system, or
+	 * (2) Every named object in the system has the "uninhabited" attribute.
+	 * Being given the "Uninhabited" government does not cause a system to be
+	 * marked as uninhabited.
+	 * @param map The set of map data to check against.
+	 * @return Whether or not this system is marked as uninhabited.
+	 */
+	public boolean isUninhabited(GalacticMap map) {
+		List<StellarObject> namedObjects = getAllNamedObjects();
+		if (namedObjects.size() == 0) {
+			System.out.println("No named objects. Uninhabited!");
+			return true;
+		}
+		
+		for (StellarObject obj : namedObjects) {
+			Planet planet = map.getPlanet(obj.getName());
+
+			if (!planet.getAttributes().contains("uninhabited")) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public List<StellarObject> getAllNamedObjects() {
+		List<StellarObject> uncheckedObjects = getObjects();
+		List<StellarObject> namedObjects = new ArrayList<>();
+		
+		while (uncheckedObjects.size() > 0) {
+			StellarObject obj = uncheckedObjects.get(0);
+
+			if (obj.isNamed()) {
+				namedObjects.add(obj);
+			}
+	
+			if (obj.hasNamedChildren()) {
+				for (StellarObject child : obj.getChildren()) {
+					uncheckedObjects.add(child);
+				}
+			}
+
+			uncheckedObjects.remove(0);
+		}
+
+		return namedObjects;
+	}
 
 	// Accessors
 	public String getName() {
@@ -110,6 +163,10 @@ public class StarSystem {
 
 	public String getMusic() {
 		return music;
+	}
+
+	public List<StellarObject> getObjects() {
+		return objects;
 	}
 
 	public List<String> getHyperlinks() {
@@ -161,7 +218,11 @@ public class StarSystem {
 		this.music = music;
 	}
 
+	public void addObject(StellarObject object) {
+		objects.add(object);
+	}
+
 	public void addHyperlink(String hyperlink) {
-		this.hyperlinks.add(hyperlink);
+		hyperlinks.add(hyperlink);
 	}
 }
