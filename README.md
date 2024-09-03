@@ -1,10 +1,10 @@
-# Endless Sky Mapgen
+# Endless Sky Map Generator
 
 For a little over a year now, I have been maintaining a map of Endless Sky. When I was looking ahead at the upcoming 0.10.9 release and saw a new faction I did't have room for on my legend, I had the bright idea to (instead of spending half an hour fixing up the legend) go spend 15 to 20 hours making my own mapping tool.  
 
-This mapping tool is not intended to compete with the "consumer market" of easy-to-use map viewers with GUIs, nor is functionality for adding or modifying map data something I plan to add. If you want the former, I reccomend Darcy Manoel's [online map viewer](https://darcymanoel.github.io/Endless-Sky-Map-Viewer/). If you want the latter, Quyykk's [plugin editor](https://github.com/quyykk/plugin-editor) is probably the way to go, although it's a little buggy and outdated.
+This mapping tool is not intended to compete with the "consumer market" of easy-to-use map viewers with GUIs, nor is functionality for adding or modifying map data something I plan to add. If you want the former, I recommend Darcy Manoel's [online map viewer](https://darcymanoel.github.io/Endless-Sky-Map-Viewer/). If you want the latter, Quyykk's [plugin editor](https://github.com/quyykk/plugin-editor) is probably the way to go, although it's a little buggy and outdated.
 
-_This_ mapping tool is intended to do something very different: take a whole bunch of files as input, apply events and filters, use them to paint customizeable maps, and then combine text, maps, legends, and other images into one composite. In short, it's intended to take the work of doing dozens of screen shots, stitching them together, and post processing, and reduce it to a single command.
+_This_ mapping tool is intended to do something very different: take a whole bunch of files as input, apply events and filters, use them to paint customizable maps, and then combine text, maps, legends, and other images into one composite. In short, it's intended to take the work of doing dozens of screen shots, stitching them together, and post processing, and reduce it to a single command.
 
 ## Building
 
