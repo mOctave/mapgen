@@ -132,7 +132,8 @@ public class StarSystem implements EventModifiableObject {
 	/**
 	 * A system is marked as uninhabited when:
 	 * (1) There are no named objects in the system, or
-	 * (2) Every named object in the system has the "uninhabited" attribute.
+	 * (2) Every named object in the system either has the "uninhabited"
+	 * attribute, or is a wormhole.
 	 * Being given the "Uninhabited" government does not cause a system to be
 	 * marked as uninhabited.
 	 * @param map The set of map data to check against.
@@ -147,7 +148,10 @@ public class StarSystem implements EventModifiableObject {
 		for (StellarObject obj : namedObjects) {
 			Planet planet = map.getPlanet(obj.getName());
 
-			if (!planet.getAttributes().contains("uninhabited")) {
+			if (
+				!planet.getAttributes().contains("uninhabited")
+				&& planet.getWormhole() == null
+			) {
 				return false;
 			}
 		}
