@@ -54,10 +54,18 @@ public class Parser {
 				currentNode = makeNewNode(line);
 
 				if (nodeStack.isEmpty() && currentNode != null) {
-					if (isConfig)
+					if (isConfig) {
 						Main.addConfigNode(currentNode);
-					else
+						if (currentNode.getName().equals("extends")) {
+							for (String filename : currentNode.getArgs()) {
+								Logger.notify("Parsing extended config file %s.", filename);
+								Parser parser = new Parser(new File(filename), true, false);
+								parser.parse();
+							}
+						}
+					} else {
 						Main.addNode(currentNode);
+					}
 				} else if (currentNode != null) {
 					nodeStack.peek().addChild(currentNode);
 				}

@@ -33,6 +33,7 @@ java -jar "ES Mapper.jar" example.txt
 At this point, just running the command above won't work, because `example.txt` is an empty file. Thankfully, that can be fixed with the aid of any text editor, and a little bit of knowledge about the Endless Sky data file syntax (the syntax for the generator file is the same).
 
 Generator files can contain the following items:
+- A list of other config files this file `extends`
 - A reference to the `game directory` used to draw the map (all generator files must have one, which should at minimum have color definitions in it)
 - One or more `plugin directory`s containing excess content (completely optional)
 - One or more `viewport`s containing images that get rendered to files (technically optional, but nothing will happen if you don't have any)
@@ -41,6 +42,14 @@ Generator files can contain the following items:
 - One or more `event list`s (optional)
 
 And that's it! That's everything that can go into a generator file. Simple? Well, maybe, but most of these nodes can have a lot more stuff defined in them, so let's go over each of them in some more detail.
+
+### Extending Other Files
+
+```html
+extends <path> ...
+```
+
+Starting in version 0.2.0, you can optionally specify one or more config files that your file builds off of by using one or more `extends` nodes. Every argument passed to an `extends` node in treated as a filepath relative to the directory that the jar is in, and any file exactly matching that name will be loaded as a config file. Be very careful to avoid circular dependencies, as there is no built-in support to check for such cases yet.
 
 ### Directories
 

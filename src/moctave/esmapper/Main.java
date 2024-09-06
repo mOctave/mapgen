@@ -214,6 +214,10 @@ public class Main {
 	}
 
 	public static void examineFile(File file, boolean isPlugin) {
+		if (!file.exists()) {
+			Logger.err("File not found: %s.", file.getAbsolutePath());
+		}
+
 		if (file.getName().endsWith(".txt")) {
 			// Any .txt files are presumed to be text files, and so are parsed.
 			Parser p = new Parser(file, false, isPlugin);
@@ -310,5 +314,9 @@ public class Main {
 		}
 
 		return e;
+	}
+
+	public static Map<String, Event> getEvents() {
+		return events;
 	}
 }

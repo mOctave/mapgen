@@ -1,0 +1,60 @@
+# Copyright (c) 2024 by mOctave
+#
+# This program is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
+legend "governments"
+	align right
+	header "Human Space"
+	item "Free Worlds" "governments: Free"
+	item "Independent" "governments: Independent"
+	item "Neutral" "governments: Neutral"
+	item "Pirate" "governments: Pirate"
+	item "Republic" "governments: Republic"
+	item "Syndicate" "governments: Syndicate"
+	header "Ember Wastes"
+	item "Builder" .91 .13 .82
+	item "Remnant" "governments: Remnant"
+	header "Coalition Space"
+	item "Heliarch" 1 .8 .5
+	item "Coalition" 1 .6 .7
+	header "Hai Space"
+	item "Hai" "governments: Hai"
+	item "Hai (Unfettered)" "governments: Hai (Unfettered)"
+	header "The Core"
+	item "Bunrodea" .35 .65 .3
+	item "Korath" "governments: Korath Exiles"
+	item "Kor Efret" .49 .33 .69
+	item "Kor Mereti" .43 .48 .87
+	item "Kor Sestor" 1 .36 .49
+	header "Northern Rim"
+	item "Wanderer" .70 .91 .12
+	item "Hicemus" 0.6 0.0 0.4
+	header "Acheron"
+	item "Gegno" .75 .59 .27
+	item "Gegno Scin" "governments: Gegno Scin"
+	item "Gegno Vi" "governments: Gegno Vi"
+	header "Other"
+	item "Drak" 1 1 1
+	item "Quarg" .88 .77 0
+	item "Pug" "governments: Pug"
+	item "Uninhabited" "governments: Ungoverned"
+
+"event list" "label"
+	"label coalition space"
+	"gegno space label"
+	"label hai space"
+	"label incipias space"
+	"graveyard label"
+	"label korath space"
+	"ember waste label"
+	"umbral reach label"
+	"label wanderer space"
