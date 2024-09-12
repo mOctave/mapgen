@@ -1,8 +1,8 @@
 # Endless Sky Map Generator
 
-For a little over a year now, I have been maintaining a map of Endless Sky. When I was looking ahead at the upcoming 0.10.9 release and saw a new faction I did't have room for on my legend, I had the bright idea to (instead of spending half an hour fixing up the legend) go spend 15 to 20 hours making my own mapping tool.  
+For a little over a year now, I have been maintaining a map of Endless Sky. When I was looking ahead at the upcoming 0.10.9 release and saw a new faction I didn't have room for on my legend, I had the bright idea to (instead of spending half an hour fixing up the legend) go spend 15 to 20 hours making my own mapping tool.  
 
-This mapping tool is not intended to compete with the "consumer market" of easy-to-use map viewers with GUIs, nor is functionality for adding or modifying map data something I plan to add. If you want the former, I recommend Darcy Manoel's [online map viewer](https://darcymanoel.github.io/Endless-Sky-Map-Viewer/). If you want the latter, Quyykk's [plugin editor](https://github.com/quyykk/plugin-editor) is probably the way to go, although it's a little buggy and outdated.
+This mapping tool is not intended to compete with the "consumer market" of easy-to-use map viewers with GUIs, nor is functionality for adding or modifying map data something I plan to add. If you want the former, I recommend DarcyManoel's [online map viewer](https://darcymanoel.github.io/Endless-Sky-Map-Viewer/). If you want the latter, quyykk's [plugin editor](https://github.com/quyykk/plugin-editor) is probably the way to go, although it's a little buggy and outdated.
 
 _This_ mapping tool is intended to do something very different: take a whole bunch of files as input, apply events and filters, use them to paint customizable maps, and then combine text, maps, legends, and other images into one composite. In short, it's intended to take the work of doing dozens of screen shots, stitching them together, and post processing, and reduce it to a single command.
 
@@ -17,7 +17,7 @@ Once you have Ant installed, navigate to the directory that the jar is in, and b
 ant jar
 ```
 
-Congrats! You now have a—hopefully—working copy of the map creator.
+Congrats! You now have a hopefully—working copy of the map creator.
 
 ## Getting Started
 
@@ -37,11 +37,11 @@ Generator files can contain the following items:
 - A reference to the `game directory` used to draw the map (all generator files must have one, which should at minimum have color definitions in it)
 - One or more `plugin directory`s containing excess content (completely optional)
 - One or more `viewport`s containing images that get rendered to files (technically optional, but nothing will happen if you don't have any)
-- One or more `map`s that get drawn (like `viewport`s, you don't _need_ them, but if you don't have any you're basically working with a stripped-down, painfully slow version of Gimp)
-- One or more `legend`s that are programatically generated guides to a specific colour scheme (optional)
+- One or more `map`s that get drawn (like `viewport`s, you don't _need_ them, but if you don't have any you're basically working with a stripped-down, painfully slow version of GIMP)
+- One or more `legend`s that are programatically generated guides to a specific color scheme (optional)
 - One or more `event list`s (optional)
 
-And that's it! That's everything that can go into a generator file. Simple? Well, maybe, but most of these nodes can have a lot more stuff defined in them, so let's go over each of them in some more detail.
+And that's it! That's everything that can go into a generator file. Simple? Well, maybe, but most of these nodes can have a lot more stuff defined in them, so let's go over each of them in more detail.
 
 ### Extending Other Files
 
@@ -65,7 +65,7 @@ The `game directory` is the basic underlying layer. Even if you choose to only d
 - Color definitions for the colors `map name`, `map link`, `map wormhole`, and `message log importance high`
 - A definition for the government `Uninhabited`
 
-On top of the `game directory`, you can define as many `plugin directory`s as you want. Image paths will be resolved in reverse order, so the last plugin you define will be the first place the generator looks for images (and the `game directory` will be the last). I can't guarantee that conflicts between data will be resolved nearly as well, so map conflicting plugins at your own risk.
+On top of the `game directory`, you can define as many `plugin directory`s as you want. Image paths will be resolved in reverse order, so the last plugin you define will be the first place the generator looks for images (and the `game directory` will be the last). I can't guarantee that conflicts between data will be resolved nearly as well, so attempt to map conflicting plugins at your own risk.
 
 ### Viewports
 
@@ -104,7 +104,7 @@ The file format that you would like to receive the final images in. Should be on
 map <name> <x> <y>
 ```
 
-Draws a map at the desired coordinates. See the [Maps](#maps) section for more mapping options. Unless you're doing something really weird with the engine, you should always defined at least one map for a viewport, but you can define as many as you want. Keep in mind that all maps are drawn with a black background, so they're unlikely to layer well.
+Draws a map at the desired coordinates. See the [Maps](#maps) section for more mapping options. Unless you're doing something really weird with the engine, you should always define at least one map for a viewport, but you can define as many as you want. Keep in mind that all maps are drawn with a black background, so they're unlikely to layer well.
 
 ```html
 image <name> <x> <y>
