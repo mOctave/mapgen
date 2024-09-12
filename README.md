@@ -308,6 +308,7 @@ Painting modes are given braces not because they're all that complicated (only o
 Right now, the following painting modes are allowed:
 
 - `government` This is the default painting mode. It gives each system a color according to the color of the government that controls it.
+- `trade <commodity>` Paints the map according to the price of a selected commodity relative to its game defined minimum and maximum typical values.
 
 ## Concluding Note
 

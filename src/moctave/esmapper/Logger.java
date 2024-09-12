@@ -34,6 +34,7 @@ public class Logger {
 	public static final int ERROR_WRONG_VALUE = 6;
 	public static final int ERROR_MISSING_FILENAME = 7;
 	public static final int ERROR_DRAWING = 8;
+	public static final int ERROR_NULL_MAP_KEY = 9;
 
 	public static final String[] ERROR_MESSAGES = new String[]{
 		"Successful execution",
@@ -44,7 +45,8 @@ public class Logger {
 		"Unnamed $NODENAME node",
 		"Unexpected argument for $NODENAME node",
 		"Missing filename in $NODENAME node",
-		"Failed to draw $NODENAME to $PARENT"
+		"Failed to draw $NODENAME to $PARENT",
+		"Invalid map key while for removing $NODENAME entry"
 	};
 
 	// Node Warnings
@@ -120,8 +122,10 @@ public class Logger {
 			msg = WARNING_MESSAGES[errorType];
 		else
 			msg = ERROR_MESSAGES[errorType];
-		msg.replace("$NODENAME", node.getName());
-		msg.replace("$PARENT", parent);
+
+		msg = msg.replace("$NODENAME", node.getName());
+		msg = msg.replace("$PARENT", parent);
+
 		return msg;
 	}
 

@@ -14,7 +14,9 @@
 package moctave.esmapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StarSystem implements EventModifiableObject {
 	public static final String TYPE = "system";
@@ -52,6 +54,48 @@ public class StarSystem implements EventModifiableObject {
 				for (String arg : args) {
 					addHyperlink(arg);
 				}
+			} else if (child.getName().equals("habitable")) {
+				setHabitableDistance(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("invisible fence")) {
+				setInvisibleFenceDistance(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("jump range")) {
+				setJumpRange(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("starfield density")) {
+				setStarfieldDensity(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("arrival")) {
+				if (child.getChildren().size() > 0) {
+					for (Node grand : child.getChildren()) {
+						if (grand.getName().equals("link")) {
+							setArrivalDistanceHyper(Builder.asDouble(grand, TYPE));
+						} else if (grand.getName().equals("jump")) {
+							setArrivalDistanceJump(Builder.asDouble(grand, TYPE));
+						}
+					}
+				} else {
+					setArrivalDistanceHyper(Builder.asDouble(child, TYPE));
+					setArrivalDistanceJump(Builder.asDouble(child, TYPE));
+				}
+			} else if (child.getName().equals("departure")) {
+				if (child.getChildren().size() > 0) {
+					for (Node grand : child.getChildren()) {
+						if (grand.getName().equals("link")) {
+							setDepartureDistanceHyper(Builder.asDouble(grand, TYPE));
+						} else if (grand.getName().equals("jump")) {
+							setDepartureDistanceJump(Builder.asDouble(grand, TYPE));
+						}
+					}
+				} else {
+					setDepartureDistanceHyper(Builder.asDouble(child, TYPE));
+					setDepartureDistanceJump(Builder.asDouble(child, TYPE));
+				}
+			} else if (child.getName().equals("trade")) {
+				Builder.mapDouble(child, commodities, TYPE);
+			} else if (child.getName().equals("hazard")) {
+				Builder.mapDouble(child, hazards, TYPE);
+			} else if (child.getName().equals("asteroid")) {
+				Builder.mapDoubleArray(child, asteroids, TYPE);
+			} else if (child.getName().equals("minable")) {
+				Builder.mapDoubleArray(child, minables, TYPE);
 			}
 		}
 	}
@@ -68,8 +112,36 @@ public class StarSystem implements EventModifiableObject {
 	private List<String> attributes = new ArrayList<>();
 	private String music;
 
-	private List<StellarObject> objects = new ArrayList<>();
+	private double arrivalDistanceHyper = 0;
+	private double arrivalDistanceJump = 0;
+	private double departureDistanceHyper = 0;
+	private double departureDistanceJump = 0;
+
+	private double habitableDistance = 0;
+
+	//private List<Node> belts = new ArrayList<>();
+
+	//ramscoop stuff
+
+	private double invisibleFenceDistance = 10000;
+
+	private double jumpRange = 0;
+	//private List<Sprite> hazes = new ArrayList<>();
+
 	private List<String> hyperlinks = new ArrayList<>();
+
+	private Map<String, Double[]> asteroids = new HashMap<>();
+	private Map<String, Double[]> minables = new HashMap<>();
+
+	private Map<String, Double> commodities = new HashMap<>();
+
+	//private Map<String, Double> roamingFleets = new HashMap<>();
+	//private Map<String, Double[]> raidingFleets = new HashMap<>();
+
+	private Map<String, Double> hazards = new HashMap<>();
+	private double starfieldDensity = 1;
+
+	private List<StellarObject> objects = new ArrayList<>();
 
 	@Override
 	public void applyModifiers(Node node) {
@@ -114,6 +186,22 @@ public class StarSystem implements EventModifiableObject {
 						addHyperlink(arg);
 					}
 				}
+			} else if (child.getName().equals("habitable")) {
+				setHabitableDistance(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("invisible fence")) {
+				setInvisibleFenceDistance(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("jump range")) {
+				setJumpRange(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("starfield density")) {
+				setStarfieldDensity(Builder.asDouble(child, TYPE));
+			} else if (child.getName().equals("trade")) {
+				Builder.mapDouble(child, commodities, TYPE);
+			} else if (child.getName().equals("hazard")) {
+				Builder.mapDouble(child, hazards, TYPE);
+			} else if (child.getName().equals("asteroid")) {
+				Builder.mapDoubleArray(child, asteroids, TYPE);
+			} else if (child.getName().equals("minable")) {
+				Builder.mapDoubleArray(child, minables, TYPE);
 			}
 		}
 	}
@@ -236,13 +324,96 @@ public class StarSystem implements EventModifiableObject {
 		return music;
 	}
 
-	public List<StellarObject> getObjects() {
-		return objects;
+	public double getArrivalDistanceHyper() {
+		return arrivalDistanceHyper;
+	}
+
+	public double getArrivalDistanceJump() {
+		return arrivalDistanceJump;
+	}
+
+	public double getDepartureDistanceHyper() {
+		return departureDistanceHyper;
+	}
+
+	public double getDepartureDistanceJump() {
+		return departureDistanceJump;
+	}
+
+	public double getHabitableDistance() {
+		return habitableDistance;
+	}
+
+	public double getInvisibleFenceDistance() {
+		return invisibleFenceDistance;
+	}
+
+	public double getJumpRange() {
+		return jumpRange;
 	}
 
 	public List<String> getHyperlinks() {
 		return hyperlinks;
 	}
+
+	public double getStarfieldDensity() {
+		return starfieldDensity;
+	}
+
+	public List<StellarObject> getObjects() {
+		return objects;
+	}
+
+	public double getCommodityPrice(String commodity) {
+		try {
+			return commodities.get(commodity);
+		} catch (NullPointerException e) {
+			Logger.warn("No price for commodity %s in system %s.", commodity, name);
+			return 0;
+		}
+	}
+
+	public Double[] getAsteroidData(String asteroid) {
+		return asteroids.get(asteroid);
+	}
+
+	public double getAsteroidCount(String asteroid) {
+		Double[] arr = asteroids.get(asteroid);
+		if (arr == null)
+			return 0;
+		
+		return arr[0];
+	}
+
+	public double getAsteroidEnergy(String asteroid) {
+		Double[] arr = asteroids.get(asteroid);
+		if (arr == null)
+			return 0;
+		
+		return arr[1];
+	}
+
+	public Double[] getMinableData(String minable) {
+		return minables.get(minable);
+	}
+
+	public double getMinableCount(String minable) {
+		Double[] arr = minables.get(minable);
+		if (arr == null)
+			return 0;
+		
+		return arr[0];
+	}
+
+	public double getMinableEnergy(String minable) {
+		Double[] arr = minables.get(minable);
+		if (arr == null)
+			return 0;
+		
+		return arr[1];
+	}
+
+
 
 	// Mutators
 
@@ -280,8 +451,32 @@ public class StarSystem implements EventModifiableObject {
 		this.music = music;
 	}
 
-	public void addObject(StellarObject object) {
-		objects.add(object);
+	public void setArrivalDistanceHyper(double arrivalDistanceHyper) {
+		this.arrivalDistanceHyper = arrivalDistanceHyper;
+	}
+
+	public void setArrivalDistanceJump(double arrivalDistanceJump) {
+		this.arrivalDistanceJump = arrivalDistanceJump;
+	}
+
+	public void setDepartureDistanceHyper(double departureDistanceHyper) {
+		this.departureDistanceHyper = departureDistanceHyper;
+	}
+
+	public void setDepartureDistanceJump(double departureDistanceJump) {
+		this.departureDistanceJump = departureDistanceJump;
+	}
+
+	public void setHabitableDistance(double habitableDistance) {
+		this.habitableDistance = habitableDistance;
+	}
+
+	public void setInvisibleFenceDistance(double invisibleFenceDistance) {
+		this.invisibleFenceDistance = invisibleFenceDistance;
+	}
+
+	public void setJumpRange(double jumpRange) {
+		this.jumpRange = jumpRange;
 	}
 
 	public void addHyperlink(String hyperlink) {
@@ -290,5 +485,13 @@ public class StarSystem implements EventModifiableObject {
 
 	public void removeHyperlink(String hyperlink) {
 		hyperlinks.remove(hyperlink);
+	}
+
+	public void setStarfieldDensity(double starfieldDensity) {
+		this.starfieldDensity = starfieldDensity;
+	}
+
+	public void addObject(StellarObject object) {
+		objects.add(object);
 	}
 }

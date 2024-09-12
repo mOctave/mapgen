@@ -42,7 +42,7 @@ public class GalacticMap extends DrawnItem {
 			} else if (child.getName().equals("center")) {
 				center = Builder.asCoordinate(child, TYPE);
 			} else if (child.getName().equals("paint")) {
-				paintMode = Builder.asString(child, TYPE);
+				paintMode = child.getArgs().toArray(new String[child.getArgs().size()]);
 			} else if (child.getName().equals("event")) {
 				events.add(Builder.asString(child, TYPE));
 			} else if (child.getName().equals("event list")) {
@@ -74,7 +74,7 @@ public class GalacticMap extends DrawnItem {
 	}
 
 	private boolean pluginsOnly = false;
-	private String paintMode = "government";
+	private String[] paintMode = new String[]{"government"};
 	private boolean includeHidden = false;
 	private boolean includeUnmappableWormholes = false;
 	private boolean paintUninhabited = false;
@@ -327,12 +327,54 @@ public class GalacticMap extends DrawnItem {
 	}
 
 
-	public Color selectColor(StarSystem system, String paintMode) {
+	public Color selectColor(StarSystem system, String[] paintMode) {
 		if (!paintUninhabited() && system.isUninhabited(this))
 			return getGovernment("Uninhabited").getColor();
 
+		if (paintMode[0].equals("trade")) {
+			return getGeneralColor(getScore(
+				system.getCommodityPrice(paintMode[1]),
+				Trade.getMinCommodityPrice(paintMode[1]),
+				Trade.getMaxCommodityPrice(paintMode[1])
+			));
+		}
+
 		// Default is government paint
 		return getGovernment(system.getGovernment()).getColor();
+	}
+
+	public double getScore(double input, double min, double max) {
+		double range = max - min;
+		double progress = input - min;
+
+		return Math.min(1., Math.max(-1., progress / range * 2. - 1.));
+	}
+
+	public Color getGeneralColor(double score) {	
+		double value = Math.min(1., Math.max(-1., score));
+		if (value < 0)
+			return new Color(
+				(float) (0.12 + 0.12 * value),
+				(float) (0.48 + 0.36 * value),
+				(float) (0.48 - 0.12 * value)
+			);
+		else
+			return new Color(
+				(float) (0.12 + 0.48 * value),
+				0.48f,
+				(float) (0.48 - 0.48 * value)
+			);
+	}
+
+	public Color blendColors(Color c1, Color c2, double ratio) {
+		double negRatio = 1 - ratio;
+
+		return new Color(
+			(float) (c1.getRed() * negRatio + c2.getRed() * ratio) / 255,
+			(float) (c1.getGreen() * negRatio + c2.getGreen() * ratio) / 255,
+			(float) (c1.getBlue() * negRatio + c2.getBlue() * ratio) / 255,
+			(float) (c1.getAlpha() * negRatio + c2.getAlpha() * ratio) / 255
+		);
 	}
 
 	// Getters and setters
@@ -340,7 +382,7 @@ public class GalacticMap extends DrawnItem {
 		return pluginsOnly;
 	}
 
-	public String getPaintMode() {
+	public String[] getPaintMode() {
 		return paintMode;
 	}
 

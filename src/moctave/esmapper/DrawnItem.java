@@ -24,6 +24,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -82,7 +83,12 @@ public abstract class DrawnItem {
 		Logger.notify("Saving %s %s to file...", getType(), name);
 
 		try {
-			File output = new File(name + "." + format);
+			File outputDir = new File("output/");
+			if (!outputDir.exists()) {
+				outputDir.mkdir();
+			}
+
+			File output = new File("output/" + name + "." + format);
 			ImageIO.write((RenderedImage) image, format, output);
 
 			Logger.confirm(
