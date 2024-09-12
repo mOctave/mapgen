@@ -20,7 +20,7 @@ legend "governments"
 	item "Pirate" "governments: Pirate"
 	item "Republic" "governments: Republic"
 	item "Syndicate" "governments: Syndicate"
-	header "Ember Wastes"
+	header "Ember Waste"
 	item "Builder" .91 .13 .82
 	item "Remnant" "governments: Remnant"
 	header "Coalition Space"
