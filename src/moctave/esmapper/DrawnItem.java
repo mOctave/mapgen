@@ -82,7 +82,12 @@ public abstract class DrawnItem {
 		Logger.notify("Saving %s %s to file...", getType(), name);
 
 		try {
-			File output = new File(name + "." + format);
+			File outputDir = new File("output/");
+			if (!outputDir.exists()) {
+				outputDir.mkdir();
+			}
+
+			File output = new File("output/" + name + "." + format);
 			ImageIO.write((RenderedImage) image, format, output);
 
 			Logger.confirm(

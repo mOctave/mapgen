@@ -155,6 +155,8 @@ public class Main {
 				} catch (IndexOutOfBoundsException e) {
 					Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, "event", node);
 				}
+			} else if (node.getName().equals("trade")) {
+				Trade.addTradeInfo(node);
 			}
 		}
 		System.out.printf("Total colors: %d.%n", colors.size());

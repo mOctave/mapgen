@@ -16,6 +16,7 @@ package moctave.esmapper;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Builder {
 	public static Node checkRemoval(Node node) {
@@ -132,6 +133,65 @@ public class Builder {
 		} catch (NumberFormatException e) {
 			Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_REAL, parent, node);
 			return def;
+		}
+	}
+
+	public static void mapDouble(Node node, Map<String, Double> dest, String parent) {
+		List<String> args = node.getArgs();
+
+		if (args.size() < 2) {
+			Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, parent, node);
+			return;
+		}
+
+		if (args.size() > 2) {
+			Logger.nodeWarn(Logger.WARNING_EXTRA_ARGS, parent, node);
+		}
+
+		if (node.getFlag() == Node.REMOVE) {
+			try {
+				dest.remove(args.get(0));
+			} catch (NullPointerException e) {
+				Logger.nodeErr(Logger.ERROR_NULL_MAP_KEY, parent, node);
+			}
+		} else {
+			try {
+				dest.put(args.get(0), Double.parseDouble(args.get(1)));
+			} catch (NumberFormatException e) {
+				Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_REAL, parent, node);
+			}
+		}
+	}
+
+	public static void mapDoubleArray(Node node, Map<String, Double[]> dest, String parent) {
+		List<String> args = node.getArgs();
+
+		if (args.size() < 2) {
+			Logger.nodeErr(Logger.ERROR_INCOMPLETE_NODE, parent, node);
+			return;
+		}
+
+		if (args.size() > 2) {
+			Logger.nodeWarn(Logger.WARNING_EXTRA_ARGS, parent, node);
+		}
+
+		Double[] doubles = new Double[args.size() - 1];
+
+		if (node.getFlag() == Node.REMOVE) {
+			try {
+				dest.remove(args.get(0));
+			} catch (NullPointerException e) {
+				Logger.nodeErr(Logger.ERROR_NULL_MAP_KEY, parent, node);
+			}
+		} else {
+			try {
+				for (int i = 0; i < doubles.length; i++) {
+					doubles[i] = Double.parseDouble(args.get(i + 1));
+				}
+				dest.put(args.get(0), doubles);
+			} catch (NumberFormatException e) {
+				Logger.nodeErr(Logger.ERROR_NUMBER_FORMAT_REAL, parent, node);
+			}
 		}
 	}
 
