@@ -2,7 +2,7 @@
 
 For a little over a year now, I have been maintaining a map of Endless Sky. When I was looking ahead at the upcoming 0.10.9 release and saw a new faction I didn't have room for on my legend, I had the bright idea to (instead of spending half an hour fixing up the legend) go spend 15 to 20 hours making my own mapping tool.  
 
-This mapping tool is not intended to compete with the "consumer market" of easy-to-use map viewers with GUIs, nor is functionality for adding or modifying map data something I plan to add. If you want the former, I recommend DarcyManoel's [online map viewer](https://darcymanoel.github.io/Endless-Sky-Map-Viewer/). If you want the latter, quyykk's [plugin editor](https://github.com/quyykk/plugin-editor) is probably the way to go, although it's a little buggy and outdated.
+This mapping tool is not intended to compete with the "consumer market" of easy-to-use map viewers with GUIs, nor is functionality for adding or modifying map data something I plan to add. If you want the former, I recommend Darcy Manoel's [online map viewer](https://darcymanoel.github.io/Endless-Sky-Map-Viewer/). If you want the latter, quyykk's [plugin editor](https://github.com/quyykk/plugin-editor) is probably the way to go, although it's a little buggy and outdated.
 
 _This_ mapping tool is intended to do something very different: take a whole bunch of files as input, apply events and filters, use them to paint customizable maps, and then combine text, maps, legends, and other images into one composite. In short, it's intended to take the work of doing dozens of screen shots, stitching them together, and post processing, and reduce it to a single command.
 
@@ -65,7 +65,7 @@ The `game directory` is the basic underlying layer. Even if you choose to only d
 - Color definitions for the colors `map name`, `map link`, `map wormhole`, and `message log importance high`
 - A definition for the government `Uninhabited`
 
-On top of the `game directory`, you can define as many `plugin directory`s as you want. Image paths will be resolved in reverse order, so the last plugin you define will be the first place the generator looks for images (and the `game directory` will be the last). I can't guarantee that conflicts between data will be resolved nearly as well, so attempt to map conflicting plugins at your own risk.
+On top of the `game directory`, you can define as many `plugin directory`s as you want. Image paths will be resolved in reverse order, so the last plugin you define will be the first place the generator looks for images (and the `game directory` will be the last). I can't guarantee that conflicts between data will be resolved nearly as well, so map conflicting plugins at your own risk.
 
 ### Viewports
 
