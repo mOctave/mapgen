@@ -94,7 +94,7 @@ public class StarSystem implements EventModifiableObject {
 				Builder.mapDouble(child, hazards, TYPE);
 			} else if (child.getName().equals("asteroid")) {
 				Builder.mapDoubleArray(child, asteroids, TYPE);
-			} else if (child.getName().equals("minable")) {
+			} else if (child.getName().equals("minables")) {
 				Builder.mapDoubleArray(child, minables, TYPE);
 			}
 		}
@@ -200,7 +200,7 @@ public class StarSystem implements EventModifiableObject {
 				Builder.mapDouble(child, hazards, TYPE);
 			} else if (child.getName().equals("asteroid")) {
 				Builder.mapDoubleArray(child, asteroids, TYPE);
-			} else if (child.getName().equals("minable")) {
+			} else if (child.getName().equals("minables")) {
 				Builder.mapDoubleArray(child, minables, TYPE);
 			}
 		}

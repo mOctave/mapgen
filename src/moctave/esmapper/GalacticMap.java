@@ -332,10 +332,24 @@ public class GalacticMap extends DrawnItem {
 			return getGovernment("Uninhabited").getColor();
 
 		if (paintMode[0].equals("trade")) {
+			if (system.getCommodityPrice(paintMode[1]) == 0)
+				return getGovernment("Uninhabited").getColor();
+
 			return getGeneralColor(getScore(
 				system.getCommodityPrice(paintMode[1]),
 				Trade.getMinCommodityPrice(paintMode[1]),
 				Trade.getMaxCommodityPrice(paintMode[1])
+			));
+		}
+
+		if (paintMode[0].equals("minables")) {
+			if (system.getMinableCount(paintMode[1]) == 0)
+				return getGovernment("Uninhabited").getColor();
+
+			return getGeneralColor(getScore(
+				system.getMinableCount(paintMode[1]),
+				1,
+				15
 			));
 		}
 

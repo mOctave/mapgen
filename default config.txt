@@ -48,6 +48,113 @@ legend "governments"
 	item "Pug" "governments: Pug"
 	item "Uninhabited" "governments: Ungoverned"
 
+legend "minable count"
+	align right
+	item "not present" "governments: Ungoverned"
+	item "1 asteroid" 0 .12 .6
+	item "8 asteroids" .12 .48 .48
+	item "15 asteroids" .6 .48 0
+
+legend "food price"
+	align right
+	header "Price of Food"
+	item "unavailable" "governments: Ungoverned"
+	item "100 credits/ton" 0 .12 .6
+	item "225 credits/ton" .06 .3 .54
+	item "350 credits/ton" .12 .48 .48
+	item "475 credits/ton" .36 .48 .24
+	item "600 credits/ton" .6 .48 0
+
+legend "clothing price"
+	align right
+	header "Price of Clothing"
+	item "unavailable" "governments: Ungoverned"
+	item "140 credits/ton" 0 .12 .6
+	item "215 credits/ton" .06 .3 .54
+	item "290 credits/ton" .12 .48 .48
+	item "365 credits/ton" .36 .48 .24
+	item "440 credits/ton" .6 .48 0
+
+legend "metal price"
+	align right
+	header "Price of Metal"
+	item "unavailable" "governments: Ungoverned"
+	item "190 credits/ton" 0 .12 .6
+	item "290 credits/ton" .06 .3 .54
+	item "390 credits/ton" .12 .48 .48
+	item "490 credits/ton" .36 .48 .24
+	item "590 credits/ton" .6 .48 0
+
+legend "plastic price"
+	align right
+	header "Price of Plastic"
+	item "unavailable" "governments: Ungoverned"
+	item "240 credits/ton" 0 .12 .6
+	item "315 credits/ton" .06 .3 .54
+	item "390 credits/ton" .12 .48 .48
+	item "465 credits/ton" .36 .48 .24
+	item "540 credits/ton" .6 .48 0
+
+legend "equipment price"
+	align right
+	header "Price of Equipment"
+	item "unavailable" "governments: Ungoverned"
+	item "330 credits/ton" 0 .12 .6
+	item "430 credits/ton" .06 .3 .54
+	item "530 credits/ton" .12 .48 .48
+	item "630 credits/ton" .36 .48 .24
+	item "730 credits/ton" .6 .48 0
+
+legend "medical price"
+	align right
+	header "Price of Medical"
+	item "unavailable" "governments: Ungoverned"
+	item "430 credits/ton" 0 .12 .6
+	item "555 credits/ton" .06 .3 .54
+	item "680 credits/ton" .12 .48 .48
+	item "805 credits/ton" .36 .48 .24
+	item "930 credits/ton" .6 .48 0
+
+legend "industrial price"
+	align right
+	header "Price of Industrial"
+	item "unavailable" "governments: Ungoverned"
+	item "520 credits/ton" 0 .12 .6
+	item "620 credits/ton" .06 .3 .54
+	item "720 credits/ton" .12 .48 .48
+	item "820 credits/ton" .36 .48 .24
+	item "920 credits/ton" .6 .48 0
+
+legend "electronics price"
+	align right
+	header "Price of Electronics"
+	item "unavailable" "governments: Ungoverned"
+	item "590 credits/ton" 0 .12 .6
+	item "665 credits/ton" .06 .3 .54
+	item "740 credits/ton" .12 .48 .48
+	item "815 credits/ton" .36 .48 .24
+	item "890 credits/ton" .6 .48 0
+
+legend "heavy metals price"
+	align right
+	header "Price of Heavy Metals"
+	item "unavailable" "governments: Ungoverned"
+	item "610 credits/ton" 0 .12 .6
+	item "785 credits/ton" .06 .3 .54
+	item "960 credits/ton" .12 .48 .48
+	item "1135 credits/ton" .36 .48 .24
+	item "1310 credits/ton" .6 .48 0
+
+legend "luxury goods price"
+	align right
+	header "Price of Luxury Goods"
+	item "unavailable" "governments: Ungoverned"
+	item "920 credits/ton" 0 .12 .6
+	item "1070 credits/ton" .06 .3 .54
+	item "1220 credits/ton" .12 .48 .48
+	item "1370 credits/ton" .36 .48 .24
+	item "1520 credits/ton" .6 .48 0
+
 "event list" "label"
 	"label coalition space"
 	"gegno space label"
