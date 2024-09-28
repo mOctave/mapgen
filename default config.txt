@@ -23,6 +23,11 @@ legend "governments"
 	header "Ember Waste"
 	item "Builder" .91 .13 .82
 	item "Remnant" "governments: Remnant"
+	header "Successor Space"
+	item "Successor" 0 .8 0.653
+	item "Old Houses" "governments: Old Houses"
+	item "New Houses" "governments: New Houses"
+	item "People's Houses" 0.92 0.29 0.20
 	header "Coalition Space"
 	item "Heliarch" 1 .8 .5
 	item "Coalition" 1 .6 .7
@@ -165,3 +170,4 @@ legend "luxury goods price"
 	"ember waste label"
 	"umbral reach label"
 	"label wanderer space"
+	"label successor space"
