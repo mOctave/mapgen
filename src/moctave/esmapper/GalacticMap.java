@@ -57,6 +57,8 @@ public class GalacticMap extends DrawnItem {
 				pluginsOnly = true;
 			} else if (child.getName().equals("include hidden")) {
 				includeHidden = true;
+			} else if (child.getName().equals("exclude shrouded")) {
+				excludeShrouded = true;
 			} else if (child.getName().equals("include unmappable wormholes")) {
 				includeUnmappableWormholes = true;
 			} else if (child.getName().equals("paint uninhabited")) {
@@ -76,6 +78,7 @@ public class GalacticMap extends DrawnItem {
 	private boolean pluginsOnly = false;
 	private String[] paintMode = new String[]{"government"};
 	private boolean includeHidden = false;
+	private boolean excludeShrouded = false;
 	private boolean includeUnmappableWormholes = false;
 	private boolean paintUninhabited = false;
 
@@ -154,7 +157,10 @@ public class GalacticMap extends DrawnItem {
 		}
 
 		for (StarSystem system : systems.values()) {
-			if (!system.isHidden() || includeHidden)
+			if (
+				(!system.isHidden() || includeHidden)
+				&& !(system.isShrouded() && excludeShrouded)
+			)
 				drawSystem(system);
 		}
 
@@ -213,6 +219,9 @@ public class GalacticMap extends DrawnItem {
 			);
 
 			if (!includeHidden && (sys1.isHidden() || sys2.isHidden()))
+				continue;
+
+			if (excludeShrouded && (sys1.isShrouded() || sys2.isShrouded()))
 				continue;
 
 			// Hide the Eye and other wormholes that aren't attached to planets.

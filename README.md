@@ -155,6 +155,7 @@ map <name>
 	paint {painting mode}
 	"plugins only"
 	"include hidden"
+	"exclude shrouded"
 	"include unmappable wormholes"
 	"paint uninhabited"
 	"event list" <name>
@@ -192,6 +193,12 @@ This standalone keyword takes no arguments. When it is used, only the content fr
 ```
 
 By default, systems marked as `hidden` are not included on the map, nor are their hyperlinks or any wormholes they contain. Using `include hidden` enables them, letting you map fancy spoiler content to your heart's content.
+
+```html
+"exclude shrouded"
+```
+
+Unlike hidden systems, systems marked as `shrouded` *are* included by default on the map. If you want to disable them, use `exclude shrouded`.
 
 ```html
 "include unmappable wormholes"
